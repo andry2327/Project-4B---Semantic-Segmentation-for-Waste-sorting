@@ -60,15 +60,17 @@ def main():
     scheduler = StepLR(optimizer, step_size=cfg.TRAIN.NUM_EPOCH_LR_DECAY, gamma=cfg.TRAIN.LR_DECAY)
     _t = {'train time' : Timer(),'val time' : Timer()} 
     validate(val_loader, net, criterion, optimizer, -1, restore_transform)
+
+    print()
     for epoch in range(cfg.TRAIN.MAX_EPOCH):
         _t['train time'].tic()
         train(train_loader, net, criterion, optimizer, epoch)
         _t['train time'].toc(average=False)
-        print('training time of one epoch: {:.2f}s'.format(_t['train time'].diff))
+        print('🟠 TRAINING time of one epoch = {:.2f}s'.format(_t['train time'].diff))
         _t['val time'].tic()
         validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
         _t['val time'].toc(average=False)
-        print('val time of one epoch: {:.2f}s'.format(_t['val time'].diff))
+        print('🟢 VALIDATION time of one epoch = {:.2f}s'.format(_t['val time'].diff))
 
 
 def train(train_loader, net, criterion, optimizer, epoch):
@@ -104,7 +106,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         iou_ += calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], 2)
     mean_iu = iou_/len(val_loader)   
 
-    print('[mean iu %.4f]' % (mean_iu)) 
+    print('[mean IoU =  %.4f]' % (mean_iu)) 
     net.train()
     criterion.cuda()
 
