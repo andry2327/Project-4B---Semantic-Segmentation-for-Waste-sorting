@@ -27,6 +27,8 @@ train_loader, val_loader, restore_transform = loading_data()
 
 def main():
 
+    print()
+
     cfg_file = open('./config.py',"r")  
     cfg_lines = cfg_file.readlines()
     
@@ -60,8 +62,7 @@ def main():
     scheduler = StepLR(optimizer, step_size=cfg.TRAIN.NUM_EPOCH_LR_DECAY, gamma=cfg.TRAIN.LR_DECAY)
     _t = {'train time' : Timer(),'val time' : Timer()} 
     validate(val_loader, net, criterion, optimizer, -1, restore_transform)
-
-    print()
+   
     for epoch in range(cfg.TRAIN.MAX_EPOCH):
         _t['train time'].tic()
         train(train_loader, net, criterion, optimizer, epoch)
