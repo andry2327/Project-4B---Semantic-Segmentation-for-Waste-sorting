@@ -64,6 +64,8 @@ def main():
     validate(val_loader, net, criterion, optimizer, -1, restore_transform)
    
     for epoch in range(cfg.TRAIN.MAX_EPOCH):
+
+        print(f'Epoch {epoch}:')
         _t['train time'].tic()
         train(train_loader, net, criterion, optimizer, epoch)
         _t['train time'].toc(average=False)
