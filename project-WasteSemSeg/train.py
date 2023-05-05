@@ -65,15 +65,14 @@ def main():
    
     for epoch in range(cfg.TRAIN.MAX_EPOCH):
 
-        print(f'Epoch {epoch}:')
         _t['train time'].tic()
         train(train_loader, net, criterion, optimizer, epoch)
         _t['train time'].toc(average=False)
-        print('🟠 TRAINING time of one epoch = {:.2f}s'.format(_t['train time'].diff))
+        print('🟠 TRAINING time of epoch {} = {:.2f}s'.format(epoch, _t['train time'].diff))
         _t['val time'].tic()
         validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
         _t['val time'].toc(average=False)
-        print('🟢 VALIDATION time of one epoch = {:.2f}s'.format(_t['val time'].diff))
+        print('🟢 VALIDATION time of epoch {} = {:.2f}s'.format(epoch, _t['val time'].diff))
 
 
 def train(train_loader, net, criterion, optimizer, epoch):
