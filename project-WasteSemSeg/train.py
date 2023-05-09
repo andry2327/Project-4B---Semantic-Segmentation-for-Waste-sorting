@@ -106,7 +106,9 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         outputs = net(inputs)
         if __MODEL == 'bisenet':
             outputs = list(itertools.chain(*outputs))
-            print(len(outputs))
+            print("LEN IS:",len(outputs))
+            print('--------------------------')
+            print(outputs)
         #for binary classification
         outputs[outputs>0.5] = 1
         outputs[outputs<=0.5] = 0
