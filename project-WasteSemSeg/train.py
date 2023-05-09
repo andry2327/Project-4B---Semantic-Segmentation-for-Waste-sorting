@@ -19,6 +19,8 @@ from utils import *
 from timer import Timer
 import pdb
 
+__MODEL = 'bisenet'
+
 exp_name = cfg.TRAIN.EXP_NAME
 log_txt = cfg.TRAIN.EXP_LOG_PATH + '/' + exp_name + '.txt'
 writer = SummaryWriter(cfg.TRAIN.EXP_PATH+ '/' + exp_name)
@@ -101,7 +103,8 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         inputs = Variable(inputs, volatile=True).cuda()
         labels = Variable(labels, volatile=True).cuda()
         outputs = net(inputs)
-        print(outputs.type)
+        if __MODEL == 'bisenet':
+            outputs = list(outputs)
         #for binary classification
         outputs[outputs>0.5] = 1
         outputs[outputs<=0.5] = 0
