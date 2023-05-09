@@ -37,7 +37,7 @@ __C.TRAIN.PRETRAINED_ENCODER = '' # Path of the pretrained encoder
 __C.TRAIN.BATCH_SIZE = 16 #imgs
 __C.TRAIN.IMG_SIZE = (224,448)
 
-__C.TRAIN.GPU_ID = [2]
+__C.TRAIN.GPU_ID = [0]
 
 
 __C.TRAIN.RESUME = ''#model path
