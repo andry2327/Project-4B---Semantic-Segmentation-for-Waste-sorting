@@ -121,7 +121,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
             outputs=flatten_output
             print('---------------')
             print(len(outputs))
-            
+        print(len(outputs))    
         #for binary classification
         outputs[outputs>0.5] = 1
         outputs[outputs<=0.5] = 0
