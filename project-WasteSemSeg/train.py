@@ -107,10 +107,11 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
             outputs = list(outputs)
             for i in outputs:
                 print (type(i))
-                print(type(i.tolist()))
             outputs = [tensor.tolist() for tensor in outputs]
             print('---------------')
             print(len(outputs))
+            for i in outputs:
+                print (type(i))
         #for binary classification
         outputs[outputs>0.5] = 1
         outputs[outputs<=0.5] = 0
