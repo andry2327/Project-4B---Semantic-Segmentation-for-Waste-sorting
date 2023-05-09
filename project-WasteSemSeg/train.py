@@ -106,14 +106,17 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         outputs = net(inputs)
         if __MODEL == 'bisenet':
             outputs = list(outputs)
-            for i in outputs:
-                print (type(i))
             outputs = [tensor.tolist() for tensor in outputs]
-            print('---------------')
-            outputs = list(itertools.chain(*outputs))
-            print(len(outputs))
-            for i in outputs:
-                print (type(i))
+            flatten_output = []
+            def reemovNestings(l):
+                for i in l:
+                    if type(i) == list:
+                        reemovNestings(i)
+                    else:
+                        flatten_output.append(i)
+            reemovNestings(outputs)
+            outputs=flatten_output
+            
         #for binary classification
         outputs[outputs>0.5] = 1
         outputs[outputs<=0.5] = 0
