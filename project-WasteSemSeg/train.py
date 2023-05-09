@@ -116,7 +116,8 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
                         flatten_output.append(i)
             reemovNestings(outputs)
             outputs=flatten_output
-            len(outputs)
+            print('---------------')
+            print(len(outputs))
             
         #for binary classification
         outputs[outputs>0.5] = 1
