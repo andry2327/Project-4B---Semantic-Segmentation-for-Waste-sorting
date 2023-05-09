@@ -106,15 +106,16 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         outputs = net(inputs)
         if __MODEL == 'bisenet':
             outputs = list(outputs)
-            outputs = [tensor.tolist() for tensor in outputs]
             flatten_output = []
-            def reemovNestings(l):
+            def removeNestings(l):
                 for i in l:
                     if type(i) == list:
-                        reemovNestings(i)
+                        removeNestings(i)
+                    elif type(i) == torch.Tensor:
+                        removeNestings(i.tolist())
                     else:
                         flatten_output.append(i)
-            reemovNestings(outputs)
+            removeNestings(outputs)
             outputs=flatten_output
             print('---------------')
             print(len(outputs))
