@@ -105,7 +105,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         outputs = net(inputs)
         if __MODEL == 'bisenet':
             outputs = list(outputs)
-            print(len(outputs))
+            print(type(i) for i in outputs)
             outputs = [tensor.tolist() for tensor in outputs]
             print('---------------')
             print(len(outputs))
