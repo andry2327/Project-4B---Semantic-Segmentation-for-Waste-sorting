@@ -101,6 +101,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         inputs = Variable(inputs, volatile=True).cuda()
         labels = Variable(labels, volatile=True).cuda()
         outputs = net(inputs)
+        print(outputs.type)
         #for binary classification
         outputs[outputs>0.5] = 1
         outputs[outputs<=0.5] = 0
