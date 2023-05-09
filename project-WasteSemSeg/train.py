@@ -17,6 +17,7 @@ from config import cfg
 from loading_data import loading_data
 from utils import *
 from timer import Timer
+import itertools
 import pdb
 
 __MODEL = 'bisenet'
@@ -109,6 +110,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
                 print (type(i))
             outputs = [tensor.tolist() for tensor in outputs]
             print('---------------')
+            outputs = list(itertools.chain(*outputs))
             print(len(outputs))
             for i in outputs:
                 print (type(i))
