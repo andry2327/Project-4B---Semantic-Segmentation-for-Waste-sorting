@@ -17,6 +17,7 @@ from config import cfg
 from loading_data import loading_data
 from utils import *
 from timer import Timer
+import itertools
 import pdb
 
 __MODEL = 'bisenet'
@@ -104,9 +105,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         labels = Variable(labels, volatile=True).cuda()
         outputs = net(inputs)
         if __MODEL == 'bisenet':
-            print(type(outputs))
-            outputs = list(outputs)
-
+            outputs = list(itertools.chain(*outputs))
         #for binary classification
         outputs[outputs>0.5] = 1
         outputs[outputs<=0.5] = 0
