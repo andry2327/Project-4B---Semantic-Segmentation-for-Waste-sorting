@@ -43,7 +43,7 @@ def main():
     
     if cfg.TRAIN.STAGE=='all':
         #net = ENet(only_encode=False)
-        net = icnet
+        net = icnet.icnet_resnetd50b_cityscapes(pretrained_backbone=False, num_classes=1, aux=True)
         if cfg.TRAIN.PRETRAINED_ENCODER != '':
             encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
             del encoder_weight['classifier.bias']
@@ -52,12 +52,12 @@ def main():
             net.encoder.load_state_dict(encoder_weight)
     elif cfg.TRAIN.STAGE =='encoder':
         #net = ENet(only_encode=True)
-        net = icnet
+        net = icnet.icnet_resnetd50b_cityscapes(pretrained_backbone=False, num_classes=1, aux=True)
 
     if len(cfg.TRAIN.GPU_ID)>1:
         net = torch.nn.DataParallel(net, device_ids=cfg.TRAIN.GPU_ID).cuda()
     else:
-        net=net.to("cuda:0")
+        net=net.cuda()
 
     net.train()
     criterion = torch.nn.BCEWithLogitsLoss().cuda() # Binary Classification
