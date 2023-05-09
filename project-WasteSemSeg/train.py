@@ -42,8 +42,7 @@ def main():
     net = []   
     
     if cfg.TRAIN.STAGE=='all':
-        #net = ENet(only_encode=False)
-        net = ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 224), pretrained=True).eval().cuda()
+        net = ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), pretrained=False).eval().cuda()
         if cfg.TRAIN.PRETRAINED_ENCODER != '':
             encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
             del encoder_weight['classifier.bias']
@@ -51,8 +50,7 @@ def main():
             # pdb.set_trace()
             net.encoder.load_state_dict(encoder_weight)
     elif cfg.TRAIN.STAGE =='encoder':
-        #net = ENet(only_encode=True)
-        net = ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 224), pretrained=True).eval().cuda()
+        net = ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 224), pretrained=False).eval().cuda()
 
     if len(cfg.TRAIN.GPU_ID)>1:
         net = torch.nn.DataParallel(net, device_ids=cfg.TRAIN.GPU_ID).cuda()
