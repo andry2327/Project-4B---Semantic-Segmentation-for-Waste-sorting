@@ -10,6 +10,7 @@ from torchvision.utils import save_image
 import torchvision.transforms as standard_transforms
 import torchvision.utils as vutils
 from tensorboardX import SummaryWriter
+from bisenet import BiSeNetV2
 
 from model import ENet
 from config import cfg
@@ -41,7 +42,7 @@ def main():
     net = []   
     
     if cfg.TRAIN.STAGE=='all':
-        net = ENet(only_encode=False)
+        net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
         if cfg.TRAIN.PRETRAINED_ENCODER != '':
             encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
             del encoder_weight['classifier.bias']
@@ -49,7 +50,7 @@ def main():
             # pdb.set_trace()
             net.encoder.load_state_dict(encoder_weight)
     elif cfg.TRAIN.STAGE =='encoder':
-        net = ENet(only_encode=True)
+        net = net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
 
     if len(cfg.TRAIN.GPU_ID)>1:
         net = torch.nn.DataParallel(net, device_ids=cfg.TRAIN.GPU_ID).cuda()
