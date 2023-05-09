@@ -16,7 +16,7 @@ from config import cfg
 from loading_data import loading_data
 from utils import *
 from timer import Timer
-from pytorchcv.models import icnet
+from pytorch.pytorchcv.model_provider import get_model as ptcv_get_model
 import pdb
 
 exp_name = cfg.TRAIN.EXP_NAME
@@ -43,7 +43,7 @@ def main():
     
     if cfg.TRAIN.STAGE=='all':
         #net = ENet(only_encode=False)
-        net = icnet.icnet_resnetd50b_cityscapes(pretrained_backbone=False, num_classes=1, aux=True)
+        net = ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 224), pretrained=True).eval().cuda()
         if cfg.TRAIN.PRETRAINED_ENCODER != '':
             encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
             del encoder_weight['classifier.bias']
@@ -52,7 +52,7 @@ def main():
             net.encoder.load_state_dict(encoder_weight)
     elif cfg.TRAIN.STAGE =='encoder':
         #net = ENet(only_encode=True)
-        net = icnet.icnet_resnetd50b_cityscapes(pretrained_backbone=False, num_classes=1, aux=True)
+        net = ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 224), pretrained=True).eval().cuda()
 
     if len(cfg.TRAIN.GPU_ID)>1:
         net = torch.nn.DataParallel(net, device_ids=cfg.TRAIN.GPU_ID).cuda()
