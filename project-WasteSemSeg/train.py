@@ -20,7 +20,7 @@ from timer import Timer
 import itertools
 import pdb
 
-#__MODEL = 'bisenet'
+__MODEL = 'enet'
 
 exp_name = cfg.TRAIN.EXP_NAME
 log_txt = cfg.TRAIN.EXP_LOG_PATH + '/' + exp_name + '.txt'
@@ -45,7 +45,8 @@ def main():
     net = []   
     
     if cfg.TRAIN.STAGE=='all':
-        net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
+        #net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
+        net = ENet(only_encode=False)
         if cfg.TRAIN.PRETRAINED_ENCODER != '':
             encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
             del encoder_weight['classifier.bias']
@@ -53,7 +54,8 @@ def main():
             # pdb.set_trace()
             net.encoder.load_state_dict(encoder_weight)
     elif cfg.TRAIN.STAGE =='encoder':
-        net = net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
+        #net = net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
+        net = ENet(only_encode=False)
 
     if len(cfg.TRAIN.GPU_ID)>1:
         net = torch.nn.DataParallel(net, device_ids=cfg.TRAIN.GPU_ID).cuda()
