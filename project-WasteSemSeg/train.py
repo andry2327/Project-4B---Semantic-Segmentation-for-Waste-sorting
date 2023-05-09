@@ -104,7 +104,9 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         labels = Variable(labels, volatile=True).cuda()
         outputs = net(inputs)
         if __MODEL == 'bisenet':
+            print(outputs)
             outputs = list(outputs)
+
         #for binary classification
         outputs[outputs>0.5] = 1
         outputs[outputs<=0.5] = 0
