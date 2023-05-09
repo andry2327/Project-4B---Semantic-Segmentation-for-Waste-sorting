@@ -17,7 +17,6 @@ from config import cfg
 from loading_data import loading_data
 from utils import *
 from timer import Timer
-import itertools
 import pdb
 
 __MODEL = 'enet'
@@ -45,8 +44,8 @@ def main():
     net = []   
     
     if cfg.TRAIN.STAGE=='all':
-        #net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
-        net = ENet(only_encode=False)
+        net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
+        #net = ENet(only_encode=False)
         if cfg.TRAIN.PRETRAINED_ENCODER != '':
             encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
             del encoder_weight['classifier.bias']
@@ -54,8 +53,8 @@ def main():
             # pdb.set_trace()
             net.encoder.load_state_dict(encoder_weight)
     elif cfg.TRAIN.STAGE =='encoder':
-        #net = net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
-        net = ENet(only_encode=False)
+        net = net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
+        #net = ENet(only_encode=False)
 
     if len(cfg.TRAIN.GPU_ID)>1:
         net = torch.nn.DataParallel(net, device_ids=cfg.TRAIN.GPU_ID).cuda()
@@ -106,22 +105,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         inputs = Variable(inputs, volatile=True).cuda()
         labels = Variable(labels, volatile=True).cuda()
         outputs = net(inputs)
-        if __MODEL == 'bisenet':
-            outputs = list(outputs)
-            flatten_output = []
-            def removeNestings(l):
-                for i in l:
-                    if type(i) == list:
-                        removeNestings(i)
-                    elif type(i) == torch.Tensor:
-                        removeNestings(i.tolist())
-                    else:
-                        flatten_output.append(i)
-            removeNestings(outputs)
-            outputs=flatten_output
-            print('---------------')
-            print(len(outputs))
-        print(len(outputs))    
+        #output not of the right size for bisenet
         #for binary classification
         outputs[outputs>0.5] = 1
         outputs[outputs<=0.5] = 0
