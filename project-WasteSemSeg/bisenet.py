@@ -344,7 +344,7 @@ class BiSeNetV2(nn.Module):
         elif self.aux_mode == 'eval':
             return logits,
         elif self.aux_mode == 'pred':
-            pred = logits.argmax(dim=1)
+            pred = [logits.argmax(dim=1)]
             return pred
         else:
             raise NotImplementedError
