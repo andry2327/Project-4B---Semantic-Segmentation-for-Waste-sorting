@@ -105,10 +105,10 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         outputs = net(inputs)
         if __MODEL == 'bisenet':
             outputs = list(outputs)
+            print(len(outputs))
             outputs = [tensor.tolist() for tensor in outputs]
             print('---------------')
             print(len(outputs))
-            print(outputs)
         #for binary classification
         outputs[outputs>0.5] = 1
         outputs[outputs<=0.5] = 0
