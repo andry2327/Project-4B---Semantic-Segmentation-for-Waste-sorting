@@ -57,7 +57,7 @@ def main():
     if len(cfg.TRAIN.GPU_ID)>1:
         net = torch.nn.DataParallel(net, device_ids=cfg.TRAIN.GPU_ID).cuda()
     else:
-        net=net.cuda()
+        net=net.to("cuda:0")
 
     net.train()
     criterion = torch.nn.BCEWithLogitsLoss().cuda() # Binary Classification
