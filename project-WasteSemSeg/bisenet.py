@@ -336,16 +336,16 @@ class BiSeNetV2(nn.Module):
 
         logits = self.head(feat_head)
         if self.aux_mode == 'train':
-            logits_aux2 = self.aux2(feat2)
-            logits_aux3 = self.aux3(feat3)
-            logits_aux4 = self.aux4(feat4)
-            logits_aux5_4 = self.aux5_4(feat5_4)
-            return logits, logits_aux2, logits_aux3, logits_aux4, logits_aux5_4
-        elif self.aux_mode == 'eval':
-            return logits,
-        elif self.aux_mode == 'pred':
-            pred = logits.argmax(dim=1)
-            return pred
+    #        logits_aux2 = self.aux2(feat2)
+    #        logits_aux3 = self.aux3(feat3)
+    #        logits_aux4 = self.aux4(feat4)
+    #        logits_aux5_4 = self.aux5_4(feat5_4)
+    #        return logits, logits_aux2, logits_aux3, logits_aux4, logits_aux5_4
+    #    elif self.aux_mode == 'eval':
+    #        return logits,
+    #    elif self.aux_mode == 'pred':
+    #        pred = logits.argmax(dim=1)
+            return  logits.argmax(dim=1)
         else:
             raise NotImplementedError
 

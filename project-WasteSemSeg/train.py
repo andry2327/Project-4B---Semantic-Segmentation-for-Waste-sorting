@@ -19,7 +19,6 @@ from utils import *
 from timer import Timer
 import pdb
 
-__MODEL = 'bisenet'
 
 exp_name = cfg.TRAIN.EXP_NAME
 log_txt = cfg.TRAIN.EXP_LOG_PATH + '/' + exp_name + '.txt'
@@ -105,8 +104,6 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         inputs = Variable(inputs, volatile=True).cuda()
         labels = Variable(labels, volatile=True).cuda()
         outputs = net(inputs)
-        if __MODEL== 'bisenet':
-            outputs = outputs[0].argmax(dim=1) 
         #output not of the right size for bisenet
         #for binary classification
         outputs[outputs>0.5] = 1
