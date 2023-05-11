@@ -106,7 +106,6 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         labels = Variable(labels, volatile=True).cuda()
         outputs = net(inputs)
         if __MODEL== 'bisenet':
-            print('len of the output of the first output',len(outputs[0]))
             outputs = outputs[0] #since it returns 5 different outputs
         #output not of the right size for bisenet
         #for binary classification
