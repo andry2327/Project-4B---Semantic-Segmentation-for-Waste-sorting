@@ -52,7 +52,7 @@ def main():
             # pdb.set_trace()
             net.encoder.load_state_dict(encoder_weight)
     elif cfg.TRAIN.STAGE =='encoder':
-        net = net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
+        net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
         #net = ENet(only_encode=False)
 
     if len(cfg.TRAIN.GPU_ID)>1:
