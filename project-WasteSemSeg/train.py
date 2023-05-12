@@ -19,6 +19,7 @@ from utils import *
 from timer import Timer
 import pdb
 
+__MODEL = 'bisenet'
 
 exp_name = cfg.TRAIN.EXP_NAME
 log_txt = cfg.TRAIN.EXP_LOG_PATH + '/' + exp_name + '.txt'
@@ -84,9 +85,11 @@ def train(train_loader, net, criterion, optimizer, epoch):
         inputs, labels = data
         inputs = Variable(inputs).cuda()
         labels = Variable(labels).cuda()
-   
+
         optimizer.zero_grad()
         outputs = net(inputs)
+        if __MODEL=='bisenet':
+            outputs = torch.squeeze(outputs)
         loss = criterion(outputs, labels.unsqueeze(1).float())
         loss.backward()
         optimizer.step()
@@ -120,11 +123,3 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
 
 if __name__ == '__main__':
     main()
-
-
-
-
-
-
-
-
