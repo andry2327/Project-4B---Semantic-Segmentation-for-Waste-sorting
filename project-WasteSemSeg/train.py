@@ -27,8 +27,6 @@ train_loader, val_loader, restore_transform = loading_data()
 
 def main():
 
-    print()
-
     cfg_file = open('./config.py',"r")  
     cfg_lines = cfg_file.readlines()
     
@@ -65,6 +63,8 @@ def main():
     # Validation
     mIoU_list = []
     validate(val_loader, net, criterion, optimizer, -1, restore_transform)
+
+    print('\n')
    
     for epoch in range(cfg.TRAIN.MAX_EPOCH):
 
