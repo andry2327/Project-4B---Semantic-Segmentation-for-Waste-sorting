@@ -81,6 +81,8 @@ def main():
     # print mIoU plots
     plot_mIoU_validation(cfg.TRAIN.MAX_EPOCH, mIoU_list)
 
+    return mIoU_list
+
 
 def train(train_loader, net, criterion, optimizer, epoch):
     for i, data in enumerate(train_loader, 0):
