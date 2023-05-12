@@ -19,9 +19,6 @@ from utils import *
 from timer import Timer
 import pdb
 
-#__MODEL = 'bisenet'
-__MODEL = ''
-
 exp_name = cfg.TRAIN.EXP_NAME
 log_txt = cfg.TRAIN.EXP_LOG_PATH + '/' + exp_name + '.txt'
 writer = SummaryWriter(cfg.TRAIN.EXP_PATH+ '/' + exp_name)
@@ -89,11 +86,7 @@ def train(train_loader, net, criterion, optimizer, epoch):
 
         optimizer.zero_grad()
         outputs = net(inputs)
-        if __MODEL=='bisenet':
-            print('pre-squeeze',outputs.size())
-            outputs = torch.squeeze(outputs)
-            print('post-squeeze',outputs.size())
-        print('enet output size',outputs.size())
+        print('output size',outputs.size())
         loss = criterion(outputs, labels.unsqueeze(1).float())
         loss.backward()
         optimizer.step()
