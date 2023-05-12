@@ -78,8 +78,8 @@ def main():
         _t['val time'].toc(average=False)
         print('🟢 VALIDATION time of epoch {} = {:.2f}s'.format(epoch, _t['val time'].diff))
 
-        # print mIoU plots
-        plot_mIoU_validation(cfg.TRAIN.MAX_EPOCH, mIoU_list)
+    # print mIoU plots
+    plot_mIoU_validation(cfg.TRAIN.MAX_EPOCH, mIoU_list)
 
 
 def train(train_loader, net, criterion, optimizer, epoch):
