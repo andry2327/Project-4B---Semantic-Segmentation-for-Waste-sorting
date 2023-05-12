@@ -20,6 +20,7 @@ from timer import Timer
 import pdb
 
 #__MODEL = 'bisenet'
+__MODEL = ''
 
 exp_name = cfg.TRAIN.EXP_NAME
 log_txt = cfg.TRAIN.EXP_LOG_PATH + '/' + exp_name + '.txt'
