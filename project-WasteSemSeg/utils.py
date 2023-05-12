@@ -100,9 +100,7 @@ def plot_mIoU_validation(N_epoch, mIoU_list):
 
     plt.xlabel(f'epoch')
     plt.ylabel(f'mIoU')
-
-    text = r'$mIoU_{max}$' + f' = {max(mIoU_list)}  ' + r'$mIoU_{last}$' + f' = {mIoU_list[-1]}'
-    plt.title(f'Validation: {text}')
+    plt.title(f'Validation')
 
     plt.xticks([x+1 for x in range(N_epoch)])
     plt.plot([x+1 for x in range(N_epoch)], mIoU_list, marker='o')
