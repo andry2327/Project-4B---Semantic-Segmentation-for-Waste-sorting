@@ -66,6 +66,8 @@ def main():
     # Validation
     mIoU_list = []
     validate(val_loader, net, criterion, optimizer, -1, restore_transform)
+
+    print('\n')
    
     for epoch in range(cfg.TRAIN.MAX_EPOCH):
 
