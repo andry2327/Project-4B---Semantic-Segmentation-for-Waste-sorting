@@ -98,10 +98,6 @@ def scores(label_trues, label_preds, n_class):
 
 def plot_mIoU_validation(N_epoch, mIoU_list):
 
-    # DEBUG
-    print(f'x = {N_epoch}, y = {len(mIoU_list)}')
-    print(mIoU_list)
-
     plt.title(f'mean IoU')
     plt.plot([x+1 for x in range(N_epoch)], mIoU_list)
     plt.show()
