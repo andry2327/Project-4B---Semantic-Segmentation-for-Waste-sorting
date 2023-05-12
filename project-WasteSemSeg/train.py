@@ -62,19 +62,27 @@ def main():
     optimizer = optim.Adam(net.parameters(), lr=cfg.TRAIN.LR, weight_decay=cfg.TRAIN.WEIGHT_DECAY)
     scheduler = StepLR(optimizer, step_size=cfg.TRAIN.NUM_EPOCH_LR_DECAY, gamma=cfg.TRAIN.LR_DECAY)
     _t = {'train time' : Timer(),'val time' : Timer()} 
+    
+    # Validation
+    mIoU_list = []
     validate(val_loader, net, criterion, optimizer, -1, restore_transform)
+
+    print('\n')
    
     for epoch in range(cfg.TRAIN.MAX_EPOCH):
 
         _t['train time'].tic()
         train(train_loader, net, criterion, optimizer, epoch)
         _t['train time'].toc(average=False)
-        print('🟠 TRAINING time of epoch {} = {:.2f}s'.format(epoch, _t['train time'].diff))
+        print('🟠 TRAINING time of epoch {}/{} = {:.2f}s'.format(epoch, cfg.TRAIN.MAX_EPOCH ,_t['train time'].diff))
         _t['val time'].tic()
+        mIoU = validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
+        mIoU_list.append(mIoU)
         validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
         _t['val time'].toc(average=False)
-        print('🟢 VALIDATION time of epoch {} = {:.2f}s'.format(epoch, _t['val time'].diff))
+        print('🟢 VALIDATION time of epoch {}/{} = {:.2f}s'.format(epoch, cfg.TRAIN.MAX_EPOCH, _t['val time'].diff))
 
+    return mIoU_list
 
 def train(train_loader, net, criterion, optimizer, epoch):
     for i, data in enumerate(train_loader, 0):
@@ -110,8 +118,11 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
     mean_iu = iou_/len(val_loader)   
 
     print('[mean IoU =  %.4f]' % (mean_iu)) 
+
     net.train()
     criterion.cuda()
+
+    return mean_iu
 
 
 if __name__ == '__main__':
