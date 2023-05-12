@@ -89,7 +89,9 @@ def train(train_loader, net, criterion, optimizer, epoch):
         optimizer.zero_grad()
         outputs = net(inputs)
         if __MODEL=='bisenet':
+            print('pre-squeeze',outputs.size())
             outputs = torch.squeeze(outputs)
+            print('post-squeeze',outputs.size())
         loss = criterion(outputs, labels.unsqueeze(1).float())
         loss.backward()
         optimizer.step()
