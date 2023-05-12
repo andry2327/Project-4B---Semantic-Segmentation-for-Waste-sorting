@@ -8,7 +8,7 @@ from config import cfg
 
 import matplotlib.pyplot as plt
 
-plt.rcParams['figure.dpi'] = 120
+plt.rcParams['figure.dpi'] = 150
 
 def weights_init_kaiming(m):
     if isinstance(m, nn.Conv2d):
@@ -99,5 +99,12 @@ def scores(label_trues, label_preds, n_class):
 def plot_mIoU_validation(N_epoch, mIoU_list):
 
     plt.title(f'mean IoU')
-    plt.plot([x+1 for x in range(N_epoch)], mIoU_list)
+    plt.xlabel(f'epoch')
+    plt.ylabel(f'mIoU')
+
+    text = r'$mIoU_{max}$ = {}\nmIoU_{last}$ = {}'.format(max(mIoU_list), mIoU_list[-1])
+    plt.text(0, 1, text, usetex=True)
+
+    plt.xticks([x+1 for x in range(N_epoch)])
+    plt.plot(mIoU_list, marker='o')
     plt.show()
