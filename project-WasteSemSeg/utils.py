@@ -6,6 +6,8 @@ import os
 import shutil
 from config import cfg
 
+import matplotlib.pyplot as plt
+
 def weights_init_kaiming(m):
     if isinstance(m, nn.Conv2d):
         #kaiming is first name of author whose last name is 'He' lol
@@ -89,3 +91,12 @@ def scores(label_trues, label_preds, n_class):
             'Mean Acc : \t': acc_cls,
             'FreqW Acc : \t': fwavacc,
             'Mean IoU : \t': mean_iu,}, cls_iu
+
+# PLOTS UTILS
+
+def plot_mIoU_validation(N_epoch, mIoU_list):
+
+    print(f'x = {N_epoch}, y = {len(mIoU_list)}')
+
+    plt.title(f'mean IoU')
+    plt.plot(list(range(N_epoch)), mIoU_list)
