@@ -18,6 +18,8 @@ from utils import *
 from timer import Timer
 import pdb
 
+from plots_util import *
+
 exp_name = cfg.TRAIN.EXP_NAME
 log_txt = cfg.TRAIN.EXP_LOG_PATH + '/' + exp_name + '.txt'
 writer = SummaryWriter(cfg.TRAIN.EXP_PATH+ '/' + exp_name)
@@ -61,6 +63,9 @@ def main():
     optimizer = optim.Adam(net.parameters(), lr=cfg.TRAIN.LR, weight_decay=cfg.TRAIN.WEIGHT_DECAY)
     scheduler = StepLR(optimizer, step_size=cfg.TRAIN.NUM_EPOCH_LR_DECAY, gamma=cfg.TRAIN.LR_DECAY)
     _t = {'train time' : Timer(),'val time' : Timer()} 
+
+    # Validation
+    mIoU_list = []
     validate(val_loader, net, criterion, optimizer, -1, restore_transform)
    
     for epoch in range(cfg.TRAIN.MAX_EPOCH):
@@ -70,9 +75,13 @@ def main():
         _t['train time'].toc(average=False)
         print('🟠 TRAINING time of epoch {} = {:.2f}s'.format(epoch, _t['train time'].diff))
         _t['val time'].tic()
-        validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
+        mIoU = validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
+        mIoU_list.append(mIoU)
         _t['val time'].toc(average=False)
         print('🟢 VALIDATION time of epoch {} = {:.2f}s'.format(epoch, _t['val time'].diff))
+
+        # print mIoU plots
+        plot_mIoU_validation(cfg.TRAIN.MAX_EPOCH, mIoU_list)
 
 
 def train(train_loader, net, criterion, optimizer, epoch):
@@ -106,11 +115,13 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         #for multi-classification ???
 
         iou_ += calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], 2)
-    mean_iu = iou_/len(val_loader)   
+    mean_iu = iou_/len(val_loader)
 
     print('[mean IoU =  %.4f]' % (mean_iu)) 
     net.train()
     criterion.cuda()
+
+    return mean_iu
 
 
 if __name__ == '__main__':
