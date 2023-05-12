@@ -86,7 +86,6 @@ def train(train_loader, net, criterion, optimizer, epoch):
 
         optimizer.zero_grad()
         outputs = net(inputs)
-        print('output size',outputs.size())
         loss = criterion(outputs, labels.unsqueeze(1).float())
         loss.backward()
         optimizer.step()
