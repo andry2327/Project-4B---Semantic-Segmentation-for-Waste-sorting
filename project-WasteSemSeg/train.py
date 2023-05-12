@@ -19,7 +19,7 @@ from utils import *
 from timer import Timer
 import pdb
 
-__MODEL = 'bisenet'
+#__MODEL = 'bisenet'
 
 exp_name = cfg.TRAIN.EXP_NAME
 log_txt = cfg.TRAIN.EXP_LOG_PATH + '/' + exp_name + '.txt'
@@ -44,8 +44,8 @@ def main():
     net = []   
     
     if cfg.TRAIN.STAGE=='all':
-        net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
-        #net = ENet(only_encode=False)
+        #net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
+        net = ENet(only_encode=False)
         if cfg.TRAIN.PRETRAINED_ENCODER != '':
             encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
             del encoder_weight['classifier.bias']
@@ -53,8 +53,8 @@ def main():
             # pdb.set_trace()
             net.encoder.load_state_dict(encoder_weight)
     elif cfg.TRAIN.STAGE =='encoder':
-        net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
-        #net = ENet(only_encode=False)
+        #net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
+        net = ENet(only_encode=False)
 
     if len(cfg.TRAIN.GPU_ID)>1:
         net = torch.nn.DataParallel(net, device_ids=cfg.TRAIN.GPU_ID).cuda()
@@ -92,6 +92,7 @@ def train(train_loader, net, criterion, optimizer, epoch):
             print('pre-squeeze',outputs.size())
             outputs = torch.squeeze(outputs)
             print('post-squeeze',outputs.size())
+        print('enet output size',outputs.size())
         loss = criterion(outputs, labels.unsqueeze(1).float())
         loss.backward()
         optimizer.step()
