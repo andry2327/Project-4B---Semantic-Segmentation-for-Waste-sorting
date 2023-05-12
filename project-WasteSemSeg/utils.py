@@ -8,6 +8,8 @@ from config import cfg
 
 import matplotlib.pyplot as plt
 
+plt.rcParams['figure.dpi'] = 120
+
 def weights_init_kaiming(m):
     if isinstance(m, nn.Conv2d):
         #kaiming is first name of author whose last name is 'He' lol
