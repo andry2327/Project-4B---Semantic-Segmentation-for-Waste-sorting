@@ -18,8 +18,6 @@ from utils import *
 from timer import Timer
 import pdb
 
-from plots_util import *
-
 exp_name = cfg.TRAIN.EXP_NAME
 log_txt = cfg.TRAIN.EXP_LOG_PATH + '/' + exp_name + '.txt'
 writer = SummaryWriter(cfg.TRAIN.EXP_PATH+ '/' + exp_name)
