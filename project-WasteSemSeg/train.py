@@ -128,7 +128,9 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         for tens in outputs:
             print(type(tens))
             print(tens.shape)
-        print(f'labels: {type(labels)}')
+        print()
+        print(f'labels: {type(labels)}, shape={labels.shape}')
+        
         for lab in labels:
             print(type(lab))
             print(lab.shape)
