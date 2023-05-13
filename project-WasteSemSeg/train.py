@@ -126,7 +126,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         '''
         outputs = net(inputs)
 
-        #DEBUG
+        '''#DEBUG
         #outputs = outputs[0] # get only first element of tuple: should work like this setting aux=False, but not working -> set manually
         print(f'outputs = {len(outputs)}, shape = {outputs.shape}')
         for tens in outputs:
@@ -136,7 +136,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         print(f'labels: {type(labels)}, shape = {labels.shape}')
         for lab in labels:
             print(type(lab))
-            print(lab.shape)
+            print(lab.shape)'''
 
         #for binary classification
         outputs[outputs>0.5] = 1
