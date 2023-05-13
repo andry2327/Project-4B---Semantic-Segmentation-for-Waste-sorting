@@ -103,7 +103,7 @@ def plot_mIoU_validation(net_str, mIoU_list, N_epoch, lr, N_classes):
 
     plt.xlabel(f'epoch')
     plt.ylabel(f'mIoU')
-    plt.title(f'Validation')
+    plt.title(f'{net_str} Validation')
 
     plt.xticks([x+1 for x in range(N_epoch)])
     plt.plot([x+1 for x in range(N_epoch)], mIoU_list, marker='o')
