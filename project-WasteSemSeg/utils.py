@@ -9,6 +9,7 @@ from config import cfg
 import matplotlib.pyplot as plt
 
 plt.rcParams['figure.dpi'] = 150
+plt.rcParams["figure.figsize"] = (10,6)
 
 def weights_init_kaiming(m):
     if isinstance(m, nn.Conv2d):
@@ -97,6 +98,8 @@ def scores(label_trues, label_preds, n_class):
 # PLOTS UTILS
 
 def plot_mIoU_validation(N_epoch, mIoU_list):
+
+    plt.figure(figsize=(10,5))
 
     plt.xlabel(f'epoch')
     plt.ylabel(f'mIoU')
