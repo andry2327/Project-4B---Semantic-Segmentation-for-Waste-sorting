@@ -42,7 +42,7 @@ def main():
     net = []   
     
     if cfg.TRAIN.STAGE=='all':
-        net = ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), pretrained=False).eval().cuda()
+        net = ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), pretrained=False, aux=False).eval().cuda()
         if cfg.TRAIN.PRETRAINED_ENCODER != '':
             encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
             del encoder_weight['classifier.bias']
@@ -107,10 +107,13 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
     for vi, data in enumerate(val_loader, 0):
         inputs, labels = data
         inputs = Variable(inputs, volatile=True).cuda()
+        # labels: <class 'torch.Tensor'>, shape = torch.Size([16, 224, 448])
         labels = Variable(labels, volatile=True).cuda()
 
         # outputs is a tuple with 4 tensors inside -> (torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor)
         '''
+        outputs details:
+
         tuple length = 4
         <class 'torch.Tensor'>
         torch.Size([16, 19, 224, 448])
