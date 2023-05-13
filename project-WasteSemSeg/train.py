@@ -111,9 +111,9 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         outputs = net(inputs)
 
         #DEBUG
-
+        print(f'tuple length = {len(outputs)}')
         for tens in outputs:
-            print(type(tens)) 
+            print(type(tens))
 
         #for binary classification
         outputs[outputs>0.5] = 1
