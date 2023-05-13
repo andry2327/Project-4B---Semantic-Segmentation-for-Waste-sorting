@@ -127,6 +127,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         outputs = net(inputs)
 
         #DEBUG
+        outputs = outputs[] # get only first element of tuple
         print(f'tuple length = {len(outputs)}')
         for tens in outputs:
             print(type(tens))
