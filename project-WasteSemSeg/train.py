@@ -108,7 +108,19 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         inputs, labels = data
         inputs = Variable(inputs, volatile=True).cuda()
         labels = Variable(labels, volatile=True).cuda()
+
         # outputs is a tuple with 4 tensors inside -> (torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor)
+        '''
+        tuple length = 4
+        <class 'torch.Tensor'>
+        torch.Size([16, 19, 224, 448])
+        <class 'torch.Tensor'>
+        torch.Size([16, 19, 56, 112])
+        <class 'torch.Tensor'>
+        torch.Size([16, 19, 28, 56])
+        <class 'torch.Tensor'>
+        torch.Size([16, 19, 14, 28])
+        '''
         outputs = net(inputs)
 
         #DEBUG
@@ -116,6 +128,10 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         for tens in outputs:
             print(type(tens))
             print(tens.shape)
+        print(f'labels: {type(labels)}')
+        for lab in labels:
+            print(type(lab))
+            print(lab.shape)
 
         #for binary classification
         outputs[outputs>0.5] = 1
