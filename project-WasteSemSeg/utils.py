@@ -108,6 +108,7 @@ def plot_mIoU_validation(net_str, mIoU_list, N_epoch, lr, N_classes):
     plt.plot([x+1 for x in range(N_epoch)], mIoU_list, marker='o')
 
     fig_name = f'{net_str}__N_epoch={N_epoch}_LR={lr}_N_classes={N_classes}'
-    plt.savefig(fig_name, dpi=200)
+    format = '.png'
+    plt.savefig(fig_name+format, dpi=200)
 
     plt.show()
