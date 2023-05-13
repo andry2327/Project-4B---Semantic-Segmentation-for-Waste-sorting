@@ -42,7 +42,7 @@ def main():
     net = []   
     
     if cfg.TRAIN.STAGE=='all':
-        net = ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), pretrained=False, aux=False).eval().cuda()
+        net = ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), num_classes=1, pretrained=False, aux=False).eval().cuda()
         if cfg.TRAIN.PRETRAINED_ENCODER != '':
             encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
             del encoder_weight['classifier.bias']
@@ -50,7 +50,7 @@ def main():
             # pdb.set_trace()
             net.encoder.load_state_dict(encoder_weight)
     elif cfg.TRAIN.STAGE =='encoder':
-        net = ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), pretrained=False).eval().cuda()
+        net = ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), num_classes=1, pretrained=False, aux=False).eval().cuda()
 
     if len(cfg.TRAIN.GPU_ID)>1:
         net = torch.nn.DataParallel(net, device_ids=cfg.TRAIN.GPU_ID).cuda()
@@ -74,7 +74,7 @@ def main():
         _t['train time'].tic()
         train(train_loader, net, criterion, optimizer, epoch)
         _t['train time'].toc(average=False)
-        print('🟠 TRAINING time of epoch {}/{} = {:.2f}s'.format(epoch, cfg.TRAIN.MAX_EPOCH ,_t['train time'].diff))
+        print('🟠 TRAINING time of epoch {}/{} = {:.2f}s'.format(epoch, cfg.TRAIN.MAX_EPOCH , _t['train time'].diff))
         _t['val time'].tic()
         mIoU = validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
         mIoU_list.append(mIoU)
