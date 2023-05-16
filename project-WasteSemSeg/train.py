@@ -91,6 +91,8 @@ def main(net_name = 'Enet'):
         # save previous mIoU list
         mIoU_list = checkpoint['mIoU_list']
 
+        print(f"✅ Model '{os.listdir(f'checkpoints/{net_name}')[1]}' Loaded\n")
+
     # Validation
     mIoU_list = []
     print()
@@ -100,7 +102,7 @@ def main(net_name = 'Enet'):
 
     print('\n')
    
-    for epoch in range(start_epoch, start_epoch+cfg.TRAIN.MAX_EPOCH):
+    for epoch in range(start_epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH):
 
         _t['train time'].tic()
         train(train_loader, net, criterion, optimizer, epoch)
@@ -121,7 +123,7 @@ def main(net_name = 'Enet'):
                 'mIoU_list': mIoU_list
             }
             torch.save(checkpoint, f'checkpoints/{net_name}/checkpoint_{net_name}_epoch={epoch}.pth')
-            if epoch > save_every:
+            if epoch >= save_every:
                 os.remove(f'checkpoints/{net_name}/checkpoint_{net_name}_epoch={epoch-save_every}.pth')
 
     return mIoU_list
