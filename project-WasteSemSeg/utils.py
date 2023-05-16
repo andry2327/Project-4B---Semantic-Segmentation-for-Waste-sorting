@@ -116,8 +116,8 @@ def plot_mIoU_validation(net_str, mIoU_list, N_epoch, lr, N_classes):
 
     ax = plt.gca()
 
-    ax.set_xticks(N_epoch)
-    xticklabels = showTicksLabels(N_epoch)
+    ax.set_xticks([x+1 for x in range(N_epoch)])
+    xticklabels = showTicksLabels([x+1 for x in range(N_epoch)])
     ax.set_xticklabels(xticklabels)
 
 
