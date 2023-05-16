@@ -103,7 +103,7 @@ def main(net_name = 'Enet', checkpoint = False):
         print('🟢 VALIDATION time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH,  _t['val time'].diff))
 
         # save the model state every few epochs 
-        if (epoch + 1) % save_every == 0:
+        if (epoch+1) % save_every == 0:
             checkpoint = {
                 'model_state_dict': net.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
@@ -111,7 +111,7 @@ def main(net_name = 'Enet', checkpoint = False):
                 'mIoU_list': mIoU_list
             }
             torch.save(checkpoint, f'checkpoints/{net_name}/checkpoint_{net_name}_epoch={epoch+1}.pth')
-            if epoch >= save_every:
+            if epoch+1 >= save_every:
                 path_pth_file = [file for file in os.listdir(f'checkpoints/{net_name}') if '.pth' in file][0]
                 os.remove(f'checkpoints/{net_name}/{path_pth_file}')
 
