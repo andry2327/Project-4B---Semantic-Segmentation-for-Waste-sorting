@@ -112,7 +112,8 @@ def main(net_name = 'Enet', checkpoint = False):
             }
             torch.save(checkpoint, f'checkpoints/{net_name}/checkpoint_{net_name}_epoch={epoch}.pth')
             if epoch >= save_every:
-                os.remove(f'checkpoints/{net_name}/checkpoint_{net_name}_epoch={epoch-save_every}.pth')
+                path_pth_file = [file for file in os.listdir(f'checkpoints/{net_name}') if '.pth' in file][0]
+                os.remove(f'checkpoints/{net_name}/{path_pth_file}')
 
     return mIoU_list
 
