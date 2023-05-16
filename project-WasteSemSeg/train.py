@@ -29,7 +29,16 @@ train_loader, val_loader, restore_transform = loading_data()
 def set_net(net_name):
     net_name = net_name.lower()
     if(net_name == 'enet'):
-        net = ENet(only_encode=False)
+        if cfg.TRAIN.STAGE=='all':
+            net = ENet(only_encode=False)
+            if cfg.TRAIN.PRETRAINED_ENCODER != '':
+                encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
+                del encoder_weight['classifier.bias']
+                del encoder_weight['classifier.weight']
+                # pdb.set_trace()
+                net.encoder.load_state_dict(encoder_weight)
+        elif cfg.TRAIN.STAGE =='encoder':
+            net = ENet(only_encode=True)
     elif (net_name == 'bisenet'):
         net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
     else : 
@@ -37,7 +46,7 @@ def set_net(net_name):
         net = ''
     return net
 
-def main():
+def main(net_name = 'Enet'):
 
     cfg_file = open('./config.py',"r")  
     cfg_lines = cfg_file.readlines()
@@ -48,18 +57,8 @@ def main():
         torch.cuda.set_device(cfg.TRAIN.GPU_ID[0])
     torch.backends.cudnn.benchmark = True
 
-    net = []   
-    
-    if cfg.TRAIN.STAGE=='all':
-        net = ENet(only_encode=False)
-        if cfg.TRAIN.PRETRAINED_ENCODER != '':
-            encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
-            del encoder_weight['classifier.bias']
-            del encoder_weight['classifier.weight']
-            # pdb.set_trace()
-            net.encoder.load_state_dict(encoder_weight)
-    elif cfg.TRAIN.STAGE =='encoder':
-        net = ENet(only_encode=True)
+    #net=[]
+    net = set_net(net_name)    
 
     if len(cfg.TRAIN.GPU_ID)>1:
         net = torch.nn.DataParallel(net, device_ids=cfg.TRAIN.GPU_ID).cuda()
