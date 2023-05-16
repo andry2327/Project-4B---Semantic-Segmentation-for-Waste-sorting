@@ -96,6 +96,12 @@ def scores(label_trues, label_preds, n_class):
             'Mean IoU : \t': mean_iu,}, cls_iu
 
 # PLOTS UTILS
+def showTicksLabels(xticks):
+  if len(xticks) > 10:
+    xticklabels = ['' if int(i) % 5 != 0 else str(int(i)) for i in xticks]
+  else: xticklabels = xticks
+
+  return xticklabels
 
 def plot_mIoU_validation(net_str, mIoU_list, N_epoch, lr, N_classes):
 
@@ -105,8 +111,17 @@ def plot_mIoU_validation(net_str, mIoU_list, N_epoch, lr, N_classes):
     plt.ylabel(f'mIoU')
     plt.title(f'{net_str} Validation')
 
-    plt.xticks([x+1 for x in range(N_epoch)])
+    # plt.xticks([x+1 for x in range(N_epoch)])
     plt.plot([x+1 for x in range(N_epoch)], mIoU_list, marker='o')
+
+    ax = plt.gca()
+
+    ax.set_xticks(N_epoch)
+    xticklabels = showTicksLabels(N_epoch)
+    ax.set_xticklabels(xticklabels)
+
+
+    plt.draw()
 
     fig_name = f'{net_str}__N_epoch={N_epoch}_LR={lr}_N_classes={N_classes}_->_MAXmIoU={round(max(mIoU_list), 4)}_LASTmIoU={round(mIoU_list[-1], 4)}'
     format = '.png'
