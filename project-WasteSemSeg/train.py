@@ -13,6 +13,8 @@ from tensorboardX import SummaryWriter
 
 from model import ENet
 from bisenet import BiSeNetV2
+from pytorchcv.model_provider import get_model as ptcv_get_model
+
 from config import cfg
 from loading_data import loading_data
 from utils import *
@@ -42,8 +44,7 @@ def set_net(net_name):
     elif (net_name == 'bisenet'):
         net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
     else : 
-
-        net = ''
+        net =  ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False).eval().cuda()
     return net
 
 def main(net_name = 'Enet'):
