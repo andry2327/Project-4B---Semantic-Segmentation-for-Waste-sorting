@@ -47,7 +47,7 @@ def set_net(net_name):
         net =  ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False).eval().cuda()
     return net
 
-def main(net_name = 'Enet'):
+def main(net_name = 'Enet', checkpoint = False):
 
     net_name = net_name.lower()
 
@@ -77,22 +77,8 @@ def main(net_name = 'Enet'):
     scheduler = StepLR(optimizer, step_size=cfg.TRAIN.NUM_EPOCH_LR_DECAY, gamma=cfg.TRAIN.LR_DECAY)
     _t = {'train time' : Timer(),'val time' : Timer()} 
 
-    if len(os.listdir(f'checkpoints/{net_name}')) > 1:
-        # load the saved checkpoint
-        path_pth_file = [file for file in os.listdir(f'checkpoints/{net_name}') if '.pth' in file][0]
-        checkpoint = torch.load(f'checkpoints/{net_name}/{path_pth_file}')
-
-        # restore the state of the model and optimizer
-        net.load_state_dict(checkpoint['model_state_dict'])
-        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-
-        # resume training from the saved epoch
-        start_epoch = checkpoint['epoch']
-
-        # save previous mIoU list
-        mIoU_list = checkpoint['mIoU_list']
-
-        print(f"✅ Model '{os.listdir(f'checkpoints/{net_name}')[1]}' Loaded\n")
+    if checkpoint:
+        net = load_checkpoints(net_name,net,optimizer)
 
     # Validation
     mIoU_list = []
@@ -103,7 +89,7 @@ def main(net_name = 'Enet'):
 
     print('\n')
    
-    for epoch in range(start_epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH):
+    for epoch in range(start_epoch, start_epoch+cfg.TRAIN.MAX_EPOCH):
 
         _t['train time'].tic()
         train(train_loader, net, criterion, optimizer, epoch)
@@ -116,7 +102,7 @@ def main(net_name = 'Enet'):
         print('🟢 VALIDATION time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH,  _t['val time'].diff))
 
         # save the model state every few epochs 
-        if epoch % save_every == 0:
+        if (epoch + 1) % save_every == 0:
             checkpoint = {
                 'model_state_dict': net.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),

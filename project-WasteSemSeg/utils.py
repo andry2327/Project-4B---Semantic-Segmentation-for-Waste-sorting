@@ -1,4 +1,4 @@
-from torch import nn
+import torch
 import torch.nn.functional as F
 import numpy as np
 from PIL import Image
@@ -128,3 +128,22 @@ def plot_mIoU_validation(net_str, mIoU_list, N_epoch, lr, N_classes):
     plt.savefig(fig_name+format, dpi=200)
 
     plt.show()
+
+def load_checkpoints(net_name, net, optimizer):
+    if len(os.listdir(f'checkpoints/{net_name}')) > 1:
+            # load the saved checkpoint
+            path_pth_file = [file for file in os.listdir(f'checkpoints/{net_name}') if '.pth' in file][0]
+            checkpoint = torch.load(f'checkpoints/{net_name}/{path_pth_file}')
+
+            # restore the state of the model and optimizer
+            net.load_state_dict(checkpoint['model_state_dict'])
+            optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+
+            # resume training from the saved epoch
+            start_epoch = checkpoint['epoch']
+
+            # save previous mIoU list
+            mIoU_list = checkpoint['mIoU_list']
+
+            print(f"✅ Model '{os.listdir(f'checkpoints/{net_name}')[1]}' Loaded\n")
+            return net
