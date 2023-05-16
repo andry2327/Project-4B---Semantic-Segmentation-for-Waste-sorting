@@ -141,8 +141,7 @@ def load_checkpoints(net_name, net, optimizer):
             optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 
             # resume training from the saved epoch
-            # epoch+1: it is the first epoch from which to start trining in for loop
-            start_epoch = checkpoint['epoch'] + 1
+            start_epoch = checkpoint['epoch']
 
             # save previous mIoU list
             mIoU_list = checkpoint['mIoU_list']
