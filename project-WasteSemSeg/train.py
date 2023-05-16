@@ -112,7 +112,7 @@ def main(net_name = 'Enet'):
         _t['val time'].toc(average=False)
         print('🟢 VALIDATION time of epoch {}/{} = {:.2f}s'.format(epoch+1, cfg.TRAIN.MAX_EPOCH,  _t['val time'].diff))
 
-        # save the model state every few epochs
+        # save the model state every few epochs 
         if epoch % save_every == 0:
             checkpoint = {
                 'model_state_dict': net.state_dict(),
