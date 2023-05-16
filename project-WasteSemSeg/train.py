@@ -49,6 +49,11 @@ def set_net(net_name):
 
 def main(net_name = 'Enet'):
 
+    net_name = net_name.lower()
+
+    save_every = 2
+    start_epoch = 0
+
     cfg_file = open('./config.py',"r")  
     cfg_lines = cfg_file.readlines()
     
@@ -72,6 +77,20 @@ def main(net_name = 'Enet'):
     scheduler = StepLR(optimizer, step_size=cfg.TRAIN.NUM_EPOCH_LR_DECAY, gamma=cfg.TRAIN.LR_DECAY)
     _t = {'train time' : Timer(),'val time' : Timer()} 
 
+    if len(os.listdir(f'checkpoints/{net_name}')) != 0:
+        # load the saved checkpoint
+        checkpoint = torch.load(os.listdir(f'checkpoints/{net_name}')[0])
+
+        # restore the state of the model and optimizer
+        net.load_state_dict(checkpoint['model_state_dict'])
+        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+
+        # resume training from the saved epoch
+        start_epoch = checkpoint['epoch']
+
+        # save previous mIoU list
+        mIoU_list = checkpoint['mIoU_list']
+
     # Validation
     mIoU_list = []
     print()
@@ -81,7 +100,7 @@ def main(net_name = 'Enet'):
 
     print('\n')
    
-    for epoch in range(cfg.TRAIN.MAX_EPOCH):
+    for epoch in range(start_epoch, start_epoch+cfg.TRAIN.MAX_EPOCH):
 
         _t['train time'].tic()
         train(train_loader, net, criterion, optimizer, epoch)
@@ -92,6 +111,18 @@ def main(net_name = 'Enet'):
         mIoU_list.append(mIoU)
         _t['val time'].toc(average=False)
         print('🟢 VALIDATION time of epoch {}/{} = {:.2f}s'.format(epoch+1, cfg.TRAIN.MAX_EPOCH,  _t['val time'].diff))
+
+        # save the model state every few epochs
+        if epoch % save_every == 0:
+            checkpoint = {
+                'model_state_dict': net.state_dict(),
+                'optimizer_state_dict': optimizer.state_dict(),
+                'epoch': epoch,
+                'mIoU_list': mIoU_list
+            }
+            torch.save(checkpoint, f'checkpoints/{net_name}/checkpoint_{net_name}_epoch={epoch}.pth')
+            if epoch > save_every:
+                os.remove(f'checkpoints/{net_name}/checkpoint_{net_name}_epoch={epoch-save_every}.pth')
 
     return mIoU_list
 
