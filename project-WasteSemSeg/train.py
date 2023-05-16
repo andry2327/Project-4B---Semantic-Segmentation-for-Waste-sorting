@@ -51,7 +51,7 @@ def main(net_name = 'Enet', checkpoint = False):
 
     net_name = net_name.lower()
 
-    save_every = 5
+    save_every = 2
     start_epoch = 0
 
     cfg_file = open('./config.py',"r")  
