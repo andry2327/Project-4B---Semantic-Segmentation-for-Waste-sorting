@@ -74,6 +74,9 @@ def main(net_name = 'Enet'):
 
     # Validation
     mIoU_list = []
+    print()
+    print(f'Initial mIoU NO TRAINING: ', end='')
+
     validate(val_loader, net, criterion, optimizer, -1, restore_transform)
 
     print('\n')
