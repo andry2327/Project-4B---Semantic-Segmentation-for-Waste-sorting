@@ -12,6 +12,7 @@ import torchvision.utils as vutils
 from tensorboardX import SummaryWriter
 
 from model import ENet
+from bisenet import BiSeNetV2
 from config import cfg
 from loading_data import loading_data
 from utils import *
@@ -24,6 +25,17 @@ writer = SummaryWriter(cfg.TRAIN.EXP_PATH+ '/' + exp_name)
 
 pil_to_tensor = standard_transforms.ToTensor()
 train_loader, val_loader, restore_transform = loading_data()
+
+def set_net(net_name):
+    net_name = net_name.lower()
+    if(net_name == 'enet'):
+        net = ENet(only_encode=False)
+    elif (net_name == 'bisenet'):
+        net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
+    else : 
+
+        net = ''
+    return net
 
 def main():
 
