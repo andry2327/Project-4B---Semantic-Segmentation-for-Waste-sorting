@@ -79,7 +79,8 @@ def main(net_name = 'Enet'):
 
     if len(os.listdir(f'checkpoints/{net_name}')) > 1:
         # load the saved checkpoint
-        checkpoint = torch.load(os.listdir(f'checkpoints/{net_name}')[1])
+        path_pth_file = [file for file in os.listdir(f'checkpoints/{net_name}') if '.pth' in file][0]
+        checkpoint = torch.load(path_pth_file)
 
         # restore the state of the model and optimizer
         net.load_state_dict(checkpoint['model_state_dict'])
