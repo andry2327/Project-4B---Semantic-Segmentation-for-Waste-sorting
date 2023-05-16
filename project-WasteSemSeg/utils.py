@@ -147,4 +147,4 @@ def load_checkpoints(net_name, net, optimizer):
             mIoU_list = checkpoint['mIoU_list']
 
             print(f"✅ Model '{os.listdir(f'checkpoints/{net_name}')[1]}' Loaded\n")
-            return net
+            return net, optimizer, start_epoch, mIoU_list

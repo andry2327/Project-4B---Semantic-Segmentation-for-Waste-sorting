@@ -77,11 +77,12 @@ def main(net_name = 'Enet', checkpoint = False):
     scheduler = StepLR(optimizer, step_size=cfg.TRAIN.NUM_EPOCH_LR_DECAY, gamma=cfg.TRAIN.LR_DECAY)
     _t = {'train time' : Timer(),'val time' : Timer()} 
 
-    if checkpoint:
-        net = load_checkpoints(net_name,net,optimizer)
-
     # Validation
     mIoU_list = []
+
+    if checkpoint:
+        net, optimizer, start_epoch, mIoU_list = load_checkpoints(net_name, net, optimizer)
+
     print()
     print(f'Initial mIoU NO TRAINING: ', end='')
 
