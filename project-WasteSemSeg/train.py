@@ -108,12 +108,12 @@ def main(net_name = 'Enet'):
         _t['train time'].tic()
         train(train_loader, net, criterion, optimizer, epoch)
         _t['train time'].toc(average=False)
-        print('🟠 TRAINING time of epoch {}/{} = {:.2f}s'.format(epoch+1, cfg.TRAIN.MAX_EPOCH, _t['train time'].diff))
+        print('🟠 TRAINING time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH, _t['train time'].diff))
         _t['val time'].tic()
         mIoU = validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
         mIoU_list.append(mIoU)
         _t['val time'].toc(average=False)
-        print('🟢 VALIDATION time of epoch {}/{} = {:.2f}s'.format(epoch+1, cfg.TRAIN.MAX_EPOCH,  _t['val time'].diff))
+        print('🟢 VALIDATION time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH,  _t['val time'].diff))
 
         # save the model state every few epochs 
         if epoch % save_every == 0:
