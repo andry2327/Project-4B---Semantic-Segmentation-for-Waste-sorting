@@ -77,9 +77,9 @@ def main(net_name = 'Enet'):
     scheduler = StepLR(optimizer, step_size=cfg.TRAIN.NUM_EPOCH_LR_DECAY, gamma=cfg.TRAIN.LR_DECAY)
     _t = {'train time' : Timer(),'val time' : Timer()} 
 
-    if len(os.listdir(f'checkpoints/{net_name}')) != 0:
+    if len(os.listdir(f'checkpoints/{net_name}')) > 1:
         # load the saved checkpoint
-        checkpoint = torch.load(os.listdir(f'checkpoints/{net_name}')[0])
+        checkpoint = torch.load(os.listdir(f'checkpoints/{net_name}')[1])
 
         # restore the state of the model and optimizer
         net.load_state_dict(checkpoint['model_state_dict'])
