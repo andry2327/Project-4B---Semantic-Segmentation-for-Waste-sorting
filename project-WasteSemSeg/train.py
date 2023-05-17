@@ -82,6 +82,7 @@ def main(net_name = 'Enet', checkpoint = False):
 
     if checkpoint:
         net, optimizer, start_epoch, mIoU_list = load_checkpoints(net_name, net, optimizer)
+        #start_epoch += 1 #because the start_epoch was already trained.
 
     print()
     print(f'Initial mIoU NO TRAINING: ', end='')
@@ -107,7 +108,7 @@ def main(net_name = 'Enet', checkpoint = False):
             checkpoint = {
                 'model_state_dict': net.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
-                'epoch': epoch,
+                'epoch': epoch+1,
                 'mIoU_list': mIoU_list
             }
             torch.save(checkpoint, f'checkpoints/{net_name}/checkpoint_{net_name}_epoch={epoch+1}.pth')
