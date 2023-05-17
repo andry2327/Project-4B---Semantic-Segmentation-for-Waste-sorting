@@ -111,7 +111,7 @@ def main(net_name = 'Enet', checkpoint = False):
                 'mIoU_list': mIoU_list
             }
             torch.save(checkpoint, f'checkpoints/{net_name}/checkpoint_{net_name}_epoch={epoch+1}.pth')
-            print(f"🔷 Model checkpoint '{f'checkpoints/{net_name}/checkpoint_{net_name}_epoch={epoch+1}.pth'}' saved")
+            print(f"🔷 Model checkpoint '{f'checkpoint_{net_name}_epoch={epoch+1}.pth'}' saved")
             if epoch >= save_every:
                 os.remove(f'checkpoints/{net_name}/checkpoint_{net_name}_epoch={epoch+1-save_every}.pth')
 
