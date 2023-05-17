@@ -98,8 +98,8 @@ def scores(label_trues, label_preds, n_class):
 
 # PLOTS UTILS
 def showTicksLabels(xticks):
-  if len(xticks) > 10:
-    xticklabels = ['' if int(i) % 5 != 0 else str(int(i)) for i in xticks]
+  if len(xticks) > 20:
+    xticklabels = ['' if (int(i) % 5 != 0 or int(i) != 1) else str(int(i)) for i in xticks]
   else: xticklabels = xticks
 
   return xticklabels
@@ -120,7 +120,6 @@ def plot_mIoU_validation(net_str, mIoU_list, N_epoch, lr, N_classes):
     ax.set_xticks([x+1 for x in range(N_epoch)])
     xticklabels = showTicksLabels([x+1 for x in range(N_epoch)])
     ax.set_xticklabels(xticklabels)
-
 
     plt.draw()
 
