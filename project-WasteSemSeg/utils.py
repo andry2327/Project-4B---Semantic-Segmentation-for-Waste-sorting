@@ -132,6 +132,7 @@ def plot_mIoU_validation(net_str, mIoU_list, N_epoch, lr, N_classes):
 def load_checkpoints(net_name, net, optimizer):
     if len(os.listdir(f'checkpoints/{net_name}')) > 1:
             # load the saved checkpoint
+            print([file for file in os.listdir(f'checkpoints/{net_name}') if '.pth' in file])
             path_pth_file = [file for file in os.listdir(f'checkpoints/{net_name}') if '.pth' in file][0]
             checkpoint = torch.load(f'checkpoints/{net_name}/{path_pth_file}')
 
