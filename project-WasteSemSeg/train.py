@@ -20,6 +20,7 @@ from loading_data import loading_data
 from utils import *
 from timer import Timer
 import pdb
+from tqdm import tqdm
 
 exp_name = cfg.TRAIN.EXP_NAME
 log_txt = cfg.TRAIN.EXP_LOG_PATH + '/' + exp_name + '.txt'
@@ -120,6 +121,9 @@ def main(net_name = 'Enet', checkpoint = False):
 
 
 def train(train_loader, net, criterion, optimizer, epoch):
+
+    train_progress = tqdm(total=len(train_loader), desc=f"Epoch {epoch+1} Training", leave=False)
+
     for i, data in enumerate(train_loader, 0):
         inputs, labels = data
         inputs = Variable(inputs).cuda()
@@ -130,6 +134,10 @@ def train(train_loader, net, criterion, optimizer, epoch):
         loss = criterion(outputs, labels.unsqueeze(1).float())
         loss.backward()
         optimizer.step()
+
+        train_progress.update(1)
+    
+    train_progress.close()
 
 
 def validate(val_loader, net, criterion, optimizer, epoch, restore):
