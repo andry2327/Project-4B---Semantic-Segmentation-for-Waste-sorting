@@ -87,6 +87,7 @@ def scores(label_trues, label_preds, n_class):
     acc_cls = np.nanmean(acc_cls)
     iu = np.diag(hist) / (hist.sum(axis=1) + hist.sum(axis=0) - np.diag(hist))
     mean_iu = np.nanmean(iu)
+    
     freq = hist.sum(axis=1) / hist.sum()
     fwavacc = (freq[freq > 0] * iu[freq > 0]).sum()
     cls_iu = dict(zip(range(n_class), iu))
@@ -99,7 +100,7 @@ def scores(label_trues, label_preds, n_class):
 # PLOTS UTILS
 def showTicksLabels(xticks):
   if len(xticks) > 20:
-    xticklabels = ['' if (int(i) % 5 != 0 or int(i) != 1) else str(int(i)) for i in xticks]
+    xticklabels = ['' if (int(i) % 5 != 0 and int(i) > 1) else str(int(i)) for i in xticks]
   else: xticklabels = xticks
 
   return xticklabels
