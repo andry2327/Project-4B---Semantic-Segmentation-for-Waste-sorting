@@ -147,6 +147,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
     output_batches = []
     label_batches = []
     iou_ = 0.0
+    validation_progress = tqdm(total=len(val_loader), desc=f"Epoch {epoch+1} Validation", leave=False)
     for vi, data in enumerate(val_loader, 0):
         inputs, labels = data
         inputs = Variable(inputs, volatile=True).cuda()
@@ -158,6 +159,9 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         #for multi-classification ???
 
         iou_ += calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], 2)
+        validation_progress.update(1)
+    
+    validation_progress.close()
     mean_iu = iou_/len(val_loader)
 
     print('[mean IoU =  %.4f]' % (mean_iu)) 
