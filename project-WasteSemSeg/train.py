@@ -88,7 +88,8 @@ def main(net_name = 'Enet', checkpoint = False):
     print()
     print(f'Initial mIoU NO TRAINING: ', end='')
 
-    validate(val_loader, net, criterion, optimizer, -1, restore_transform)
+    labels_DEBUG = validate(val_loader, net, criterion, optimizer, -1, restore_transform)
+    return labels_DEBUG
 
     print('\n')
    
@@ -162,6 +163,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         print(f'lables shape: {labels.shape}')
         print()
         print(labels[0])
+        return labels[0]
         outputs = net(inputs)
         #for binary classification
         outputs[outputs>0.5] = 1
