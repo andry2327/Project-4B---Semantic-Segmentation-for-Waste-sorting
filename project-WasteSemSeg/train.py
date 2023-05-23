@@ -126,6 +126,11 @@ def train(train_loader, net, criterion, optimizer, epoch):
 
     for i, data in enumerate(train_loader, 0):
         inputs, labels = data
+        # DEBUG
+        print(f'lables type: {type(labels)}')
+        print(f'lables shape: {labels.shape}')
+        print()
+        print(labels)
         inputs = Variable(inputs).cuda()
         labels = Variable(labels).cuda()
    
