@@ -163,7 +163,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         print(f'lables shape: {labels.shape}')
         print()
         print(labels[0])
-        return labels[0]
+        return labels
         outputs = net(inputs)
         #for binary classification
         outputs[outputs>0.5] = 1
