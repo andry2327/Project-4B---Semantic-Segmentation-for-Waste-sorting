@@ -38,7 +38,7 @@ def calculate_mean_iu(predictions, gts, num_classes):
         sum_iu += iou_i
         iu_classes.append(iou_i)
     mean_iu = sum_iu / num_classes
-    return mean_iu
+    return mean_iu, np.array(iu_classes)
 
 class CrossEntropyLoss2d(nn.Module):
     def __init__(self, weight=None, size_average=True):

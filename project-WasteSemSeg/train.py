@@ -147,7 +147,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
     output_batches = []
     label_batches = []
     iou_ = 0.0
-    iou_classes_=[0,0,0,0,0] 
+    iou_classes_=np.array([0,0,0,0,0])
     validation_progress = tqdm(total=len(val_loader), desc=f"Epoch {epoch+1} Validation", leave=False)
     for vi, data in enumerate(val_loader, 0):
         inputs, labels = data
@@ -170,7 +170,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
   
         iou, iou_classes = calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], cfg.DATA.NUM_CLASSES)
         iou_ += iou
-        iou_classes_ += iou_classes
+        iou_classes_ = np.sum(iou_classes, iou_classes_)
 
         validation_progress.update(1)
     
