@@ -19,7 +19,7 @@ __C.VIS = edict()
 
 __C.DATA.DATASET = 'city' # dataset
 __C.DATA.DATA_PATH = '/content/dataset'
-__C.DATA.NUM_CLASSES = 4 # 4 materials + null class
+__C.DATA.NUM_CLASSES = 1 # 4 materials + null class
 __C.DATA.IGNORE_LABEL = 255
 __C.DATA.IGNORE_LABEL_TO_TRAIN_ID = 19 # 255->19
                                           
