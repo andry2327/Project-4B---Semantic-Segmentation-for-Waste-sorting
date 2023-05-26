@@ -52,7 +52,7 @@ class resortit(data.Dataset):
         d = {}
         for i in range(mask.shape[0]):
             for j in range(mask.shape[0]):
-                el = mask[i, j]
+                el = float(mask[i, j])
                 if el in d.keys():
                     d[el] += 1
                 else:
