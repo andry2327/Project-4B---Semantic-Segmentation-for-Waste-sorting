@@ -159,10 +159,11 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         
         # multi-classification
         outputs[outputs<=0.5] = 0 #background
-        outputs[outputs>0.5 & outputs<=1.5] = 1 #aluminium
-        outputs[outputs>1.5 & outputs<=2.5] = 2 #paper
-        outputs[outputs>2.5 & outputs<=3.5] = 3 #bottle
+        outputs[(outputs>0.5) & (outputs<=1.5)] = 1 #aluminium
+        outputs[(outputs>1.5) & (outputs<=2.5)] = 2 #paper
+        outputs[(outputs>2.5) & (outputs<=3.5)] = 3 #bottle
         outputs[outputs>3.5] = 4 #nylon
+
 
         iou_ += calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], cfg.DATA.NUM_CLASSES+1)
         validation_progress.update(1)
