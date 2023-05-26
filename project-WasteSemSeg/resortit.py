@@ -47,7 +47,9 @@ class resortit(data.Dataset):
         img = self.loader(img_path)
         mask = np.array(self.loader(mask_path))
         # DEBUG
-        print(mask)
+        print(mask.shape)
+        for i in range(mask.size/10):
+            print(mask[i:i+10])
         mask[mask>0] = 1   ##########Only Binary Segmentation#####
         mask = Image.fromarray(mask)
         # DEBUG
