@@ -32,8 +32,6 @@ def calculate_mean_iu(predictions, gts, num_classes):
     for i in range(num_classes):
         n_ii = t_i = sum_n_ji = 1e-9
         for p, gt in zip(predictions, gts):
-            p = torch.from_numpy(p)
-            p = torch.squeeze(p,1)
             print("p_Shape: ", p.shape)
             print("gt_shape: ",gt.shape)
             n_ii += np.sum(gt[p == i] == i)
