@@ -62,6 +62,7 @@ class resortit(data.Dataset):
         mask[mask>0] = 1   ##########Only Binary Segmentation#####
         mask = Image.fromarray(mask)
         # DEBUG
+        img.show()
         mask.show()
         exit()
 
