@@ -133,7 +133,7 @@ def train(train_loader, net, criterion, optimizer, epoch):
         optimizer.zero_grad()
         outputs = net(inputs)
         #loss = criterion(outputs, labels.unsqueeze(1).float())
-        loss = criterion(outputs, labels.float())
+        loss = criterion(outputs, labels)
         loss.backward()
         optimizer.step()
 
