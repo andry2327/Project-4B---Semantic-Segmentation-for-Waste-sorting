@@ -183,7 +183,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         #     print(d)
         
 
-        iou_ += calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], cfg.DATA.NUM_CLASSES+1)
+        iou_ += calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], 2)
         validation_progress.update(1)
     
     validation_progress.close()
