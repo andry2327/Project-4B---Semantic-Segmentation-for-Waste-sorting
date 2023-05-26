@@ -158,32 +158,17 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         # outputs[outputs<=0.5] = 0
         
         # multi-classification
-        outputs[outputs<=0.5] = 0 #background
-        outputs[(outputs>0.5) & (outputs<=1.5)] = 1 #aluminium
-        outputs[(outputs>1.5) & (outputs<=2.5)] = 2 #paper
-        outputs[(outputs>2.5) & (outputs<=3.5)] = 3 #bottle
-        outputs[outputs>3.5] = 4 #nylon
+        # outputs[outputs<=0.5] = 0 #background
+        # outputs[(outputs>0.5) & (outputs<=1.5)] = 1 #aluminium
+        # outputs[(outputs>1.5) & (outputs<=2.5)] = 2 #paper
+        # outputs[(outputs>2.5) & (outputs<=3.5)] = 3 #bottle
+        # outputs[outputs>3.5] = 4 #nylon
 
-        # insp = outputs.squeeze_(1).data.cpu().numpy()[0]
-        # d_1 = {}
-        # d_2 = {}
-        # d_3 = {}
-        # d_4 = {} 
-        # dl = [d_1, d_2, d_3, d_4]
-        # for i in range(4):
-        #     for j in range(224):
-        #         for k in range(448):
-        #             el = insp[i,j,k]
-        #             if el in dl[i].keys():
-        #                 dl[i][el] +=1
-        #             else:
-        #                 dl[i][el] = 1
-        
-        # for d in dl:
-        #     print(d)
-        
+        softmax = nn.Softmax(dim=1)
+        outputs = torch.argmax(softmax(outputs),dim=1)
+  
 
-        iou_ += calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], 2)
+        iou_ += calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], cfg.DATA.NUM_CLASSES)
         validation_progress.update(1)
     
     validation_progress.close()
