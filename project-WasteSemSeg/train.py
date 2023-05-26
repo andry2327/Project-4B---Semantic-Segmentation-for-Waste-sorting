@@ -147,6 +147,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
     output_batches = []
     label_batches = []
     iou_ = 0.0
+    iou_classes_=[0,0,0,0,0] 
     validation_progress = tqdm(total=len(val_loader), desc=f"Epoch {epoch+1} Validation", leave=False)
     for vi, data in enumerate(val_loader, 0):
         inputs, labels = data
@@ -167,12 +168,15 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         softmax = nn.Softmax(dim=1)
         outputs = torch.argmax(softmax(outputs),dim=1)
   
+        iou, iou_classes = calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], cfg.DATA.NUM_CLASSES)
+        iou_ += iou
+        iou_classes_ += iou_classes
 
-        iou_ += calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], cfg.DATA.NUM_CLASSES)
         validation_progress.update(1)
     
     validation_progress.close()
     mean_iu = iou_/len(val_loader)
+    iou_classes_ = iou_classes_/len(val_loader)
 
     print('[mean IoU =  %.4f]' % (mean_iu)) 
 
