@@ -47,24 +47,9 @@ class resortit(data.Dataset):
         img_path, mask_path = self.imgs[index]
         img = self.loader(img_path)
         mask = np.array(self.loader(mask_path))
-        # DEBUG
-        print(mask.shape)
-        d = {}
-        for i in range(mask.shape[0]):
-            for j in range(mask.shape[0]):
-                el = float(mask[i, j])
-                if el in d.keys():
-                    d[el] += 1
-                else:
-                    d[el] = 1
-            #print(mask[i,:])
-        print(json.dumps(d, indent=4))
-        mask[mask>0] = 1   ##########Only Binary Segmentation#####
+        
+        # mask[mask>0] = 1   ##########Only Binary Segmentation#####
         mask = Image.fromarray(mask)
-        # DEBUG
-        img.show()
-        mask.show()
-        exit()
 
         if self.simul_transform is not None:
             img, mask = self.simul_transform(img, mask)

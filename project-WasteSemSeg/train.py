@@ -162,13 +162,19 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         print(f'lables type: {type(labels)}')
         print(f'lables shape: {labels.shape}')
         print()
-        print(labels[0])
-        return labels
         outputs = net(inputs)
         #for binary classification
-        outputs[outputs>0.5] = 1
-        outputs[outputs<=0.5] = 0
-        #for multi-classification ???
+        # outputs[outputs>0.5] = 1
+        # outputs[outputs<=0.5] = 0
+        
+        # multi-classification
+        outputs[outputs<=0.5] = 0 #background
+        outputs[outputs>0.5 and outputs<=1.5] = 1 #aluminium
+        outputs[outputs>1.5 and outputs<=2.5] = 2 #paper
+        outputs[outputs>2.5 and outputs<=3.5] = 3 #bottle
+        outputs[outputs>3.5] = 4 #nylon
+
+
 
         iou_ += calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], 2)
         validation_progress.update(1)
