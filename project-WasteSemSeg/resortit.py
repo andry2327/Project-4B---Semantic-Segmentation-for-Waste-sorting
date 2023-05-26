@@ -4,6 +4,7 @@ from PIL import Image
 from torch.utils import data
 import numpy as np
 from config import cfg
+import json
 
 processed_train_path = os.path.join(cfg.DATA.DATA_PATH, 'train')
 processed_val_path = os.path.join(cfg.DATA.DATA_PATH, 'val')
@@ -48,8 +49,16 @@ class resortit(data.Dataset):
         mask = np.array(self.loader(mask_path))
         # DEBUG
         print(mask.shape)
-        for i in range(mask.size/10):
-            print(mask[i:i+10])
+        d = {}
+        for i in range(mask.shape[0]):
+            for j in range(mask.shape[0]):
+                el = mask[i, j]
+                if el in d.keys():
+                    d[el] += 1
+                else:
+                    d[el] = 1
+            #print(mask[i,:])
+        print(json.dumps(d, indent=4))
         mask[mask>0] = 1   ##########Only Binary Segmentation#####
         mask = Image.fromarray(mask)
         # DEBUG
