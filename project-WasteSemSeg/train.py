@@ -88,8 +88,7 @@ def main(net_name = 'Enet', checkpoint = False):
     print()
     print(f'Initial mIoU NO TRAINING: ', end='')
 
-    labels_DEBUG = validate(val_loader, net, criterion, optimizer, -1, restore_transform)
-    return labels_DEBUG
+    validate(val_loader, net, criterion, optimizer, -1, restore_transform)
 
     print('\n')
    
@@ -127,11 +126,6 @@ def train(train_loader, net, criterion, optimizer, epoch):
 
     for i, data in enumerate(train_loader, 0):
         inputs, labels = data
-        # DEBUG
-        print(f'lables type: {type(labels)}')
-        print(f'lables shape: {labels.shape}')
-        print()
-        print(labels)
         inputs = Variable(inputs).cuda()
         labels = Variable(labels).cuda()
    
@@ -165,12 +159,10 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         
         # multi-classification
         outputs[outputs<=0.5] = 0 #background
-        outputs[outputs>0.5 and outputs<=1.5] = 1 #aluminium
-        outputs[outputs>1.5 and outputs<=2.5] = 2 #paper
-        outputs[outputs>2.5 and outputs<=3.5] = 3 #bottle
+        outputs[outputs>0.5 & outputs<=1.5] = 1 #aluminium
+        outputs[outputs>1.5 & outputs<=2.5] = 2 #paper
+        outputs[outputs>2.5 & outputs<=3.5] = 3 #bottle
         outputs[outputs>3.5] = 4 #nylon
-
-
 
         iou_ += calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], 2)
         validation_progress.update(1)
