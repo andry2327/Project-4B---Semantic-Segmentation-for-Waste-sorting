@@ -164,7 +164,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         outputs[outputs>2.5 & outputs<=3.5] = 3 #bottle
         outputs[outputs>3.5] = 4 #nylon
 
-        iou_ += calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], 2)
+        iou_ += calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], cfg.DATA.NUM_CLASSES+1)
         validation_progress.update(1)
     
     validation_progress.close()
