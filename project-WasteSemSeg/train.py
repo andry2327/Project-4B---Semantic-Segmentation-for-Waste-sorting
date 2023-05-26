@@ -73,7 +73,8 @@ def main(net_name = 'Enet', checkpoint = False):
         net=net.cuda()
 
     net.train()
-    criterion = torch.nn.BCEWithLogitsLoss().cuda() # Binary Classification
+    #criterion = torch.nn.BCEWithLogitsLoss().cuda() # Binary Classification
+    criterion = torch.nn.CrossEntropyLoss().cuda() #instance segmentation
     optimizer = optim.Adam(net.parameters(), lr=cfg.TRAIN.LR, weight_decay=cfg.TRAIN.WEIGHT_DECAY)
     scheduler = StepLR(optimizer, step_size=cfg.TRAIN.NUM_EPOCH_LR_DECAY, gamma=cfg.TRAIN.LR_DECAY)
     _t = {'train time' : Timer(),'val time' : Timer()} 
