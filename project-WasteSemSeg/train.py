@@ -164,23 +164,23 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
         outputs[(outputs>2.5) & (outputs<=3.5)] = 3 #bottle
         outputs[outputs>3.5] = 4 #nylon
 
-        insp = outputs.squeeze_(1).data.cpu().numpy()[0]
-        d_1 = {}
-        d_2 = {}
-        d_3 = {}
-        d_4 = {} 
-        dl = [d_1, d_2, d_3, d_4]
-        for i in range(4):
-            for j in range(224):
-                for k in range(448):
-                    el = insp[i,j,k]
-                    if el in dl[i].keys():
-                        dl[i][el] +=1
-                    else:
-                        dl[i][el] = 1
+        # insp = outputs.squeeze_(1).data.cpu().numpy()[0]
+        # d_1 = {}
+        # d_2 = {}
+        # d_3 = {}
+        # d_4 = {} 
+        # dl = [d_1, d_2, d_3, d_4]
+        # for i in range(4):
+        #     for j in range(224):
+        #         for k in range(448):
+        #             el = insp[i,j,k]
+        #             if el in dl[i].keys():
+        #                 dl[i][el] +=1
+        #             else:
+        #                 dl[i][el] = 1
         
-        for d in dl:
-            print(d )
+        # for d in dl:
+        #     print(d)
         
 
         iou_ += calculate_mean_iu([outputs.squeeze_(1).data.cpu().numpy()], [labels.data.cpu().numpy()], cfg.DATA.NUM_CLASSES+1)
