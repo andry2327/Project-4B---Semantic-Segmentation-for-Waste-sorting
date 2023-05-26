@@ -181,7 +181,11 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
     mean_iu = iou_/len(val_loader)
     iou_classes_ = [x / len(val_loader) for x in iou_classes_]
 
-    print('[mean IoU =  %.4f]' % (mean_iu)) 
+    print('[avg mean IoU =  %.4f]' % (mean_iu))
+    print(f'mIoU C1 (Aluminium) = {round(iou_classes_[0], 4)}   \
+          mIoU C2 (Paper) = {round(iou_classes_[1], 4)}   \
+          mIoU C3 (Bottle) = {round(iou_classes_[2], 4)}  \
+          mIoU C4 (Aluminium) = {round(iou_classes_[3], 4)}')
 
     net.train()
     criterion.cuda()
