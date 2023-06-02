@@ -75,7 +75,7 @@ class RandomVerticallyFlip(object):
 class RandomRoation(object):
     def __call__(self, img, mask):
         if random.random() < 0.5:
-            return img.transpose(Image.ROTATE_90), mask.transpose(Image.ROTATE_90)
+            return img.transpose(Image.ROTATE_180), mask.transpose(Image.ROTATE_180)
         return img, mask
 
 #   colors transformations
