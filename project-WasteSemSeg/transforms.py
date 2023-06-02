@@ -2,6 +2,7 @@ import numbers
 import random
 import numpy as np
 from PIL import Image, ImageOps, ImageFilter
+import torchvision.transforms as transforms
 
 import torch
 # ===============================img tranforms============================
@@ -61,6 +62,29 @@ class RandomHorizontallyFlip(object):
     def __call__(self, img, mask):
         if random.random() < 0.5:
             return img.transpose(Image.FLIP_LEFT_RIGHT), mask.transpose(Image.FLIP_LEFT_RIGHT)
+        return img, mask
+
+# CUSTOM TRANSFORMS
+
+class RandomVerticallyFlip(object):
+    def __call__(self, img, mask):
+        if random.random() < 0.5:
+            return img.transpose(Image.FLIP_TOP_BOTTOM), mask.transpose(Image.FLIP_TOP_BOTTOM)
+        return img, mask
+    
+class RandomRoation(object):
+    def __call__(self, img, mask):
+        if random.random() < 0.5:
+            return img.transpose(Image.ROTATE_90), mask.transpose(Image.ROTATE_90)
+        return img, mask
+
+#   colors transformations
+class RandomColorsJitter(object):
+    def __call__(self, img, mask):
+        if random.random() < 0.5:
+            # float chosen uniformly in (min,max)
+            transform = transforms.ColorJitter(brightness=(0.2,1), contrast=(1), saturation=(0.2,1), hue=(-0.2,0.2))
+            return transform(img), mask
         return img, mask
 
 

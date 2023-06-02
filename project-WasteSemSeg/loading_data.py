@@ -9,7 +9,10 @@ def loading_data():
     train_simul_transform = own_transforms.Compose([
         own_transforms.Scale(int(cfg.TRAIN.IMG_SIZE[0] / 0.875)),
         own_transforms.RandomCrop(cfg.TRAIN.IMG_SIZE),
-        own_transforms.RandomHorizontallyFlip()
+        own_transforms.RandomHorizontallyFlip(),
+        own_transforms.RandomVerticallyFlip(),
+        own_transforms.RandomRoation(),
+        own_transforms.RandomColorsJitter()
     ])
     val_simul_transform = own_transforms.Compose([
         own_transforms.Scale(int(cfg.TRAIN.IMG_SIZE[0] / 0.875)),
@@ -28,9 +31,9 @@ def loading_data():
         standard_transforms.ToPILImage()
     ])
 
-    train_set = resortit('train', simul_transform=train_simul_transform, transform=img_transform,
+    train_set = resortit('train', simul_transform=None, transform=img_transform,
                            target_transform=target_transform)
-    #train_set[0] # DEBUG
+
     train_loader = DataLoader(train_set, batch_size=cfg.TRAIN.BATCH_SIZE, num_workers=16, shuffle=True)
     val_set = resortit('val', simul_transform=val_simul_transform, transform=img_transform,
                          target_transform=target_transform)
