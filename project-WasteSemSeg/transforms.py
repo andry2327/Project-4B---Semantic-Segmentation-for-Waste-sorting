@@ -81,9 +81,9 @@ class RandomRoation(object):
 #   colors transformations
 class RandomColorsJitter(object):
     def __call__(self, img, mask):
-        if random.random() < 0.5:
+        if random.random() < 0.25:
             # float chosen uniformly in (min,max)
-            transform = transforms.ColorJitter(brightness=(0.2,1), contrast=(1), saturation=(0.2,1), hue=(-0.2,0.2))
+            transform = transforms.ColorJitter(brightness=(0,0.3), contrast=(0), saturation=(0,0.3), hue=(-0.1,0.1))
             return transform(img), mask
         return img, mask
 

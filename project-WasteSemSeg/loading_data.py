@@ -11,7 +11,7 @@ def loading_data():
         own_transforms.RandomCrop(cfg.TRAIN.IMG_SIZE),
         own_transforms.RandomHorizontallyFlip(),
         own_transforms.RandomVerticallyFlip(),
-        own_transforms.RandomRoation(),
+        #own_transforms.RandomRoation(),
         own_transforms.RandomColorsJitter()
     ])
     val_simul_transform = own_transforms.Compose([
