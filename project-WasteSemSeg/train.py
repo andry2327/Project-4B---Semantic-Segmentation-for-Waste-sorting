@@ -117,7 +117,7 @@ def main(net_name = 'Enet', checkpoint = False):
             print(f"🔷 Model checkpoint '{f'checkpoint_{net_name}_N_CLASSES={cfg.DATA.NUM_CLASSES}_epoch={epoch+1}.pth'}' saved")
             if epoch >= start_epoch+save_every:
                 os.remove(f'checkpoints/{net_name}/checkpoint_{net_name}_N_CLASSES={cfg.DATA.NUM_CLASSES}_epoch={epoch+1-save_every}.pth')
-
+        print()
     return mIoU_list
 
 
