@@ -83,7 +83,7 @@ class RandomColorsJitter(object):
     def __call__(self, img, mask):
         if random.random() < 0.25:
             # float chosen uniformly in (min,max)
-            transform = transforms.ColorJitter(brightness=(0,0.3), contrast=(0), saturation=(0,0.3), hue=(-0.1,0.1))
+            transform = transforms.ColorJitter(brightness=(0,0.15), contrast=(0), saturation=(0,0.15), hue=(-0.05,0.05))
             return transform(img), mask
         return img, mask
 
