@@ -198,7 +198,7 @@ class Encoder(nn.Module):
         
         # CUSTOM
         # (64 x 128 x 128) -> (128 x 128 x 128)
-        layers.append(BottleNeck(64, 128))
+        layers.append(BottleNeck(64, 128,downsampling=True))
         
         # Section 2
         # (128 x 128 x 128) -> (256 x 128 x 128)
