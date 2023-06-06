@@ -202,7 +202,7 @@ class Encoder(nn.Module):
         
         # Section 2
         # (128 x 128 x 128) -> (256 x 128 x 128)
-        layers.append(BottleNeck(128, 256))
+        layers.append(BottleNeck(128, 256, downsampling=True))
         # Section 2 and 3
         for i in range(2):
             layers.append(BottleNeck(256, 256))
