@@ -191,18 +191,23 @@ class Encoder(nn.Module):
         for i in range(4):
             layers.append(BottleNeck(64, 64, regularlizer_prob=0.01))
         
+        # CUSTOM
+        # (64 x 128 x 128) -> (128 x 128 x 128)
+        layers.append(BottleNeck(64, 128))
+        
         # Section 2
-        layers.append(BottleNeck(64, 128, downsampling=True)) # Only 1st time
+        # (128 x 128 x 128) -> (256 x 128 x 128)
+        layers.append(BottleNeck(128, 256))
         # Section 2 and 3
         for i in range(2):
-            layers.append(BottleNeck(128, 128))
-            layers.append(BottleNeck(128, 128, dilated=True, dilation_rate=2))
-            layers.append(BottleNeck(128, 128, asymmetric=True))
-            layers.append(BottleNeck(128, 128, dilated=True, dilation_rate=4))
-            layers.append(BottleNeck(128, 128))
-            layers.append(BottleNeck(128, 128, dilated=True, dilation_rate=8))
-            layers.append(BottleNeck(128, 128, asymmetric=True))
-            layers.append(BottleNeck(128, 128, dilated=True, dilation_rate=16))
+            layers.append(BottleNeck(256, 256))
+            layers.append(BottleNeck(256, 256, dilated=True, dilation_rate=2))
+            layers.append(BottleNeck(256, 256, asymmetric=True))
+            layers.append(BottleNeck(256, 256, dilated=True, dilation_rate=4))
+            layers.append(BottleNeck(256, 256))
+            layers.append(BottleNeck(256, 256, dilated=True, dilation_rate=8))
+            layers.append(BottleNeck(256, 256, asymmetric=True))
+            layers.append(BottleNeck(256, 256, dilated=True, dilation_rate=16))
             
         # only training encoder
         if only_encode:
@@ -233,8 +238,13 @@ class Decoder(nn.Module):
     def __init__(self, num_classes):
         super(Decoder, self).__init__()
         layers = []
+        #CUSTOM: input (256 x 128 x 128)
+        # (256 x 128 x 128) -> (128 x 128 x 128)
+        layers.append(BottleNeck(256, 128, use_relu=True))
+
         # Section 4
-        layers.append(BottleNeck(128, 64, upsampling=True, use_relu=True))
+        # (128 x 128 x 128) -> (64 x 128 x 128)
+        layers.append(BottleNeck(128, 64, use_relu=True))
         layers.append(BottleNeck(64, 64, use_relu=True))
         layers.append(BottleNeck(64, 64, use_relu=True))
 
