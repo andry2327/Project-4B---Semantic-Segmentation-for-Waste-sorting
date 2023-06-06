@@ -158,8 +158,10 @@ class BottleNeck(nn.Module):
                                   self.block1x1_2)
         other = other_net(input)
         # DEBUG
+        print()
         print(f'main.shape = {main.shape}')
         print(f'other.shape = {other.shape}')
+        print()
         output = F.relu(main + other)
         if (self.downsampling):
             return output, indices
