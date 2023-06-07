@@ -99,6 +99,7 @@ def main(net_name = 'Enet', checkpoint = False):
         train(train_loader, net, criterion, optimizer, epoch)
         _t['train time'].toc(average=False)
         print('🟠 TRAINING time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH, _t['train time'].diff))
+        print(optimizer.param_groups[0]['lr'])
         _t['val time'].tic()
         mIoU = validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
         mIoU_list.append(mIoU)
