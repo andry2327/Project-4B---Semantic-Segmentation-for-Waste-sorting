@@ -27,7 +27,7 @@ log_txt = cfg.TRAIN.EXP_LOG_PATH + '/' + exp_name + '.txt'
 writer = SummaryWriter(cfg.TRAIN.EXP_PATH+ '/' + exp_name)
 
 pil_to_tensor = standard_transforms.ToTensor()
-train_loader, val_loader, restore_transform = loading_data()
+train_loader, train_augmented_loader, val_loader, restore_transform = loading_data()
 
 def set_net(net_name):
     net_name = net_name.lower()
@@ -47,6 +47,21 @@ def set_net(net_name):
     else : 
         net =  ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False).eval().cuda()
     return net
+
+#are we in a plateau?
+#we want to compare the mean of the last ten iteration with the value of the ten before. If there is a low improvement
+#we are in a plateau.
+def change_training(optimizer, scheduler, train_loader,net, epoch, miou):
+    miou = np.array(miou)
+    ten_before = miou[epoch-19:epoch-9].mean()
+    last_ten = miou[epoch-9:epoch+1].mean()
+    if (last_ten <= ten_before*1.02):
+        #the last ten iteration aren't 2% better of the ten before
+        lr = optimizer.param_groups[0]['lr']/2
+        optimizer = optim.Adam(net.parameters(), lr=lr, weight_decay=cfg.TRAIN.WEIGHT_DECAY)
+        scheduler = StepLR(optimizer, step_size=cfg.TRAIN.NUM_EPOCH_LR_DECAY, gamma=cfg.TRAIN.LR_DECAY)
+        train_loader = train_augmented_loader
+    return optimizer, scheduler, train_loader
 
 def main(net_name = 'Enet', checkpoint = False):
 
@@ -99,13 +114,18 @@ def main(net_name = 'Enet', checkpoint = False):
         train(train_loader, net, criterion, optimizer, epoch)
         _t['train time'].toc(average=False)
         print('🟠 TRAINING time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH, _t['train time'].diff))
-        print(optimizer.param_groups[0]['lr'])
+        print("learning rate: ",optimizer.param_groups[0]['lr'])
         _t['val time'].tic()
         mIoU = validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
         mIoU_list.append(mIoU)
         _t['val time'].toc(average=False)
         print('🟢 VALIDATION time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH,  _t['val time'].diff))
+        #cutting the learning rate.
+        scheduler.step()
 
+        if(epoch>=19 and epoch+1%10==0) :
+            optimizer, scheduler, train_loader = change_training(optimizer, scheduler, train_loader, net, epoch, mIoU_list)
+            
         # save the model state every few epochs 
         if (epoch+1) % save_every == 0:
             checkpoint = {
