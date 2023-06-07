@@ -83,7 +83,7 @@ def main(net_name = 'Enet', checkpoint = False):
     mIoU_list = []
 
     if checkpoint:
-        net, optimizer, start_epoch, mIoU_list = load_checkpoints(net_name, net, optimizer)
+        net, optimizer, start_epoch, mIoU_list, scheduler = load_checkpoints(net_name, net, optimizer, scheduler)
         #start_epoch += 1 #because the start_epoch was already trained.
 
     print()
@@ -96,7 +96,7 @@ def main(net_name = 'Enet', checkpoint = False):
     for epoch in range(start_epoch, start_epoch+cfg.TRAIN.MAX_EPOCH):
 
         _t['train time'].tic()
-        train(train_loader, net, criterion, optimizer, epoch)
+        train(train_loader, net, criterion, optimizer, scheduler, epoch)
         _t['train time'].toc(average=False)
         print('🟠 TRAINING time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH, _t['train time'].diff))
         _t['val time'].tic()
@@ -110,6 +110,7 @@ def main(net_name = 'Enet', checkpoint = False):
             checkpoint = {
                 'model_state_dict': net.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
+                'scheduler_state_dict': scheduler.state_dict(),
                 'epoch': epoch+1,
                 'mIoU_list': mIoU_list
             }
@@ -121,7 +122,7 @@ def main(net_name = 'Enet', checkpoint = False):
     return mIoU_list
 
 
-def train(train_loader, net, criterion, optimizer, epoch):
+def train(train_loader, net, criterion, optimizer, scheduler, epoch):
 
     train_progress = tqdm(total=len(train_loader), desc=f"Epoch {epoch+1} Training", leave=False)
 
@@ -131,11 +132,14 @@ def train(train_loader, net, criterion, optimizer, epoch):
         labels = Variable(labels).cuda()
    
         optimizer.zero_grad()
+        #DEBUG 
+        print(optimizer.param_groups[0]["lr"])
         outputs = net(inputs)
         #loss = criterion(outputs, labels.unsqueeze(1).float())
         loss = criterion(outputs, labels)
         loss.backward()
         optimizer.step()
+        scheduler.step()
 
         train_progress.update(1)
     

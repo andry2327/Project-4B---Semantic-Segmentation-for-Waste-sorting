@@ -133,7 +133,7 @@ def plot_mIoU_validation(net_str, mIoU_list, N_epoch, lr, N_classes):
 
     plt.show()
 
-def load_checkpoints(net_name, net, optimizer):
+def load_checkpoints(net_name, net, optimizer, scheduler):
     if len(os.listdir(f'checkpoints/{net_name}')) > 1:
             # load the saved checkpoint
             path_pth_file = [file for file in os.listdir(f'checkpoints/{net_name}') if '.pth' in file][0]
@@ -142,6 +142,7 @@ def load_checkpoints(net_name, net, optimizer):
             # restore the state of the model and optimizer
             net.load_state_dict(checkpoint['model_state_dict'])
             optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+            scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
 
             # resume training from the saved epoch
             start_epoch = checkpoint['epoch']
