@@ -27,7 +27,8 @@ log_txt = cfg.TRAIN.EXP_LOG_PATH + '/' + exp_name + '.txt'
 writer = SummaryWriter(cfg.TRAIN.EXP_PATH+ '/' + exp_name)
 
 pil_to_tensor = standard_transforms.ToTensor()
-train_loader, train_augmented_loader, val_loader, restore_transform = loading_data()
+#train_loader, train_augmented_loader, val_loader, restore_transform = loading_data()
+train_loader, val_loader, restore_transform = loading_data()
 
 def set_net(net_name):
     net_name = net_name.lower()
@@ -60,7 +61,7 @@ def change_training(optimizer, scheduler, train_loader,net, epoch, miou):
         lr = optimizer.param_groups[0]['lr']/2
         optimizer = optim.Adam(net.parameters(), lr=lr, weight_decay=cfg.TRAIN.WEIGHT_DECAY)
         scheduler = StepLR(optimizer, step_size=cfg.TRAIN.NUM_EPOCH_LR_DECAY, gamma=cfg.TRAIN.LR_DECAY)
-        train_loader = train_augmented_loader
+        #train_loader = train_augmented_loader
     return optimizer, scheduler, train_loader
 
 def main(net_name = 'Enet', checkpoint = False):
