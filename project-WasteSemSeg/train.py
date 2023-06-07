@@ -132,8 +132,6 @@ def train(train_loader, net, criterion, optimizer, scheduler, epoch):
         labels = Variable(labels).cuda()
    
         optimizer.zero_grad()
-        #DEBUG 
-        print(optimizer.param_groups[0]["lr"])
         outputs = net(inputs)
         #loss = criterion(outputs, labels.unsqueeze(1).float())
         loss = criterion(outputs, labels)
