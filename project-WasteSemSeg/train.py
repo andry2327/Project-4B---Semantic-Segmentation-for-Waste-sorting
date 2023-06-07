@@ -56,7 +56,7 @@ def change_training(optimizer, scheduler, train_loader,net, epoch, miou):
     ten_before = miou[epoch-19:epoch-9].mean()
     last_ten = miou[epoch-9:epoch+1].mean()
     if (last_ten <= ten_before*1.02):
-        #the last ten iteration aren't 2% better of the ten before
+        #the mean of last ten iteration isn't 2% better of the mean of the ten before
         lr = optimizer.param_groups[0]['lr']/2
         optimizer = optim.Adam(net.parameters(), lr=lr, weight_decay=cfg.TRAIN.WEIGHT_DECAY)
         scheduler = StepLR(optimizer, step_size=cfg.TRAIN.NUM_EPOCH_LR_DECAY, gamma=cfg.TRAIN.LR_DECAY)
