@@ -167,6 +167,7 @@ def dataset_balance(loading_data):
         _, labels = data
         labels.cuda()
         labels_classes = torch.unique(labels)
+        print(labels_classes)
 
         for lc in labels_classes:
             d[int(lc)] += 1
@@ -183,9 +184,12 @@ def dataset_balance(loading_data):
     print(f'TOT N of labels (NO Background class 0) = {N_labels_NB}')
     print()
     print(f'Classes by materials:')
-    for c, value in enumerate(d):
+    print()
+    for c, value in d.items():
         if c!=0:
-            print(f'{labels_to_material[c]}: {value} -> {round(100*value/N_labels, 2)}%, NO BG: {round(100*value/N_labels_NB, 2)}%') 
+            print(f'{labels_to_material[c]}: {value}    -> {round(100*value/N_labels, 2)}%, NO BG: {round(100*value/N_labels_NB, 2)}%') 
         else:
-            print(f'{labels_to_material[c]}: {value} -> {round(100*value/N_labels, 2)}%')
+            print(f'{labels_to_material[c]}: {value}    -> {round(100*value/N_labels, 2)}%')
+    print()
+    
     return d
