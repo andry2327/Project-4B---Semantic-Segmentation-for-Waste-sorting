@@ -153,7 +153,7 @@ def load_checkpoints(net_name, net, optimizer):
             return net, optimizer, start_epoch, mIoU_list
     
 # Check balance of dataset
-def dataset_balance(loading_data: function):
+def dataset_balance(loading_data):
     d = {}
     train_loader, _, _ = loading_data()
     labels_list = []
