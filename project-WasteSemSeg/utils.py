@@ -162,6 +162,7 @@ def dataset_balance(loading_data):
     for data in train_loader:
 
         _, labels = data
+        labels.cuda()
         labels_classes = torch.unique(labels)
 
         for lc in labels_classes:
