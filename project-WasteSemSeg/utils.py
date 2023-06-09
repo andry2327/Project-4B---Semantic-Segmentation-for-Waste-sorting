@@ -5,6 +5,8 @@ import numpy as np
 from PIL import Image
 import os
 import shutil
+
+from tqdm import tqdm
 from config import cfg
 
 import matplotlib.pyplot as plt
@@ -158,6 +160,7 @@ def dataset_balance(loading_data):
     d = {0:0, 1:0, 2:0, 3:0, 4:0}
     train_loader, _, _ = loading_data()
     labels_list = []
+    progress = tqdm(total=len(train_loader), desc=f"Progess: ", leave=False)
 
     for data in train_loader:
 
@@ -167,6 +170,9 @@ def dataset_balance(loading_data):
 
         for lc in labels_classes:
             d[int(lc)] += 1
+        progress.update(1)
+
+    progress.close()
 
     N_labels = sum(d.values())
     N_labels_NB = sum(d.values()) - d[0]
