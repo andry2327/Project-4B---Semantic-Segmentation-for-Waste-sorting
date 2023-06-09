@@ -154,15 +154,31 @@ def load_checkpoints(net_name, net, optimizer):
     
 # Check balance of dataset
 def dataset_balance(loading_data):
-    d = {}
+    labels_to_material = {0:' Background', 1:'Aluminium', 2:'Paper', 3:'Bottle', 4:'Nylon'}
+    d = {0:0, 1:0, 2:0, 3:0, 4:0}
     train_loader, _, _ = loading_data()
     labels_list = []
 
-    for i, data in enumerate(train_loader, 0):
+    for data in train_loader:
+
         _, labels = data
-        print()
-        print(f'labels.type = {type(labels)}')
-        print(f'labels.shape = {labels.shape}')
-        print()
-        print(labels)
-        labels_list.append(labels)
+        labels_classes = torch.unique(labels)
+
+        for lc in labels_classes:
+            d[int(lc)] += 1
+
+    N_labels = sum(d.values())
+    N_labels_NB = sum(d.values()) - d[0]
+
+    print(f'Dataset labels balance:')
+    print()
+    print(f'TOT N of labels = {N_labels}')  
+    print(f'TOT N of labels (NO Background class 0) = {N_labels_NB}')
+    print()
+    print(f'Classes by materials:')
+    for c, value in enumerate(d):
+        if c!=0:
+            print(f'{labels_to_material[c]}: {value} -> {round(100*value/N_labels, 2)}%, NO BG: {round(100*value/N_labels_NB, 2)}%') 
+        else:
+            print(f'{labels_to_material[c]}: {value} -> {round(100*value/N_labels, 2)}%')
+    return d
