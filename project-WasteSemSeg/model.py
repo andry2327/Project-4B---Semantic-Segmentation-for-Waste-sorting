@@ -197,11 +197,11 @@ class Encoder(nn.Module):
             layers.append(BottleNeck(64, 64, regularlizer_prob=0.01))
         
         # CUSTOM
-        # (64 x 128 x 128) -> (128 x 128 x 128)
+        # (64 x 128 x 128) -> (128 x 64 x 64)
         layers.append(BottleNeck(64, 128,downsampling=True))
         
         # Section 2
-        # (128 x 128 x 128) -> (256 x 128 x 128)
+        # (128 x 128 x 128) -> (256 x 32 x 32)
         layers.append(BottleNeck(128, 256, downsampling=True))
         # Section 2 and 3
         for i in range(2):
@@ -243,13 +243,13 @@ class Decoder(nn.Module):
     def __init__(self, num_classes):
         super(Decoder, self).__init__()
         layers = []
-        #CUSTOM: input (256 x 128 x 128)
-        # (256 x 128 x 128) -> (128 x 128 x 128)
-        layers.append(BottleNeck(256, 128, use_relu=True))
+        #CUSTOM: input (256 x 32 x 32)
+        # (256 x 32 x 32) -> (128 x 64 x 64)
+        layers.append(BottleNeck(256, 128, upsampling=True, use_relu=True))
 
         # Section 4
-        # (128 x 128 x 128) -> (64 x 128 x 128)
-        layers.append(BottleNeck(128, 64, use_relu=True))
+        # (128 x 64 x 64) -> (64 x 128 x 128)
+        layers.append(BottleNeck(128, 64, upsampling=True, use_relu=True))
         layers.append(BottleNeck(64, 64, use_relu=True))
         layers.append(BottleNeck(64, 64, use_relu=True))
 
