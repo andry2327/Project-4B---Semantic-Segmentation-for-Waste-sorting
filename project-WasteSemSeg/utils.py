@@ -151,3 +151,18 @@ def load_checkpoints(net_name, net, optimizer):
 
             print(f"✅ Model '{path_pth_file}' Loaded\n")
             return net, optimizer, start_epoch, mIoU_list
+    
+# Check balance of dataset
+def dataset_balance(loading_data: function):
+    d = {}
+    train_loader, _, _ = loading_data()
+    labels_list = []
+
+    for i, data in enumerate(train_loader, 0):
+        _, labels = data
+        print()
+        print(f'labels.type = {type(labels)}')
+        print(f'labels.shape = {labels.shape}')
+        print()
+        print(labels)
+        labels_list.append(labels)
