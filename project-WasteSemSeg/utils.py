@@ -160,7 +160,7 @@ def dataset_balance(loading_data):
     d = {0:0, 1:0, 2:0, 3:0, 4:0}
     train_loader, _, _ = loading_data()
     labels_list = []
-    progress = tqdm(total=len(train_loader), desc=f"Progess: ", leave=False)
+    progress = tqdm(total=len(train_loader), desc=f"", leave=False)
 
     for data in train_loader:
 
