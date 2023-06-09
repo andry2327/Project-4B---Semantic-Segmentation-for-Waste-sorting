@@ -168,7 +168,6 @@ def dataset_balance(loading_data):
 
             labels.cuda()
             labels_classes = torch.unique(labels)
-            print(labels_classes)
 
             for lc in labels_classes:
                 d[int(lc)] += 1
