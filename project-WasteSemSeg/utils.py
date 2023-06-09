@@ -163,15 +163,16 @@ def dataset_balance(loading_data):
     progress = tqdm(total=len(train_loader), desc=f"", leave=False)
 
     for data in train_loader:
+        _, labels_batch = data
+        for labels in labels_batch:
 
-        _, labels = data
-        labels.cuda()
-        labels_classes = torch.unique(labels)
-        print(labels_classes)
+            labels.cuda()
+            labels_classes = torch.unique(labels)
+            print(labels_classes)
 
-        for lc in labels_classes:
-            d[int(lc)] += 1
-        progress.update(1)
+            for lc in labels_classes:
+                d[int(lc)] += 1
+            progress.update(1)
 
     progress.close()
 
