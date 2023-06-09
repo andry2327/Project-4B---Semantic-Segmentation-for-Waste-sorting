@@ -171,7 +171,7 @@ def dataset_balance(loading_data):
 
             for lc in labels_classes:
                 d[int(lc)] += 1
-            progress.update(1)
+        progress.update(1)
 
     progress.close()
 
