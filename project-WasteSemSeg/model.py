@@ -165,14 +165,19 @@ class BottleNeck(nn.Module):
 
 ENCODER_LAYER_NAMES = ['initial', 'bottleneck_1_0', 'bottleneck_1_1',
                        'bottleneck_1_2', 'bottleneck_1_3', 'bottleneck_1_4',
+                       'bottleneck_1_5', 'bottleneck_1_6', # CUSTOM
                        'bottleneck_2_0', 'bottleneck_2_1', 'bottleneck_2_2',
                        'bottleneck_2_3', 'bottleneck_2_4', 'bottleneck_2_5',
                        'bottleneck_2_6', 'bottleneck_2_7', 'bottleneck_2_8',
                        'bottleneck_3_1', 'bottleneck_3_2', 'bottleneck_3_3',
                        'bottleneck_3_4', 'bottleneck_3_5', 'bottleneck_3_6',
-                       'bottleneck_3_7', 'bottleneck_3_8', 'classifier']
-DECODER_LAYER_NAMES = ['bottleneck_4_0', 'bottleneck_4_1', 'bottleneck_4_2'
-                       'bottleneck_5_0', 'bottleneck_5_1', 'fullconv']
+                       'bottleneck_3_7', 'bottleneck_3_8', 
+                       'bottleneck_4_1', 'bottleneck_4_2', 'bottleneck_4_3', # CUSTOM
+                       'bottleneck_4_4', 'bottleneck_4_5', 'bottleneck_4_6', # CUSTOM
+                       'bottleneck_4_7', 'bottleneck_4_8' # CUSTOM
+                       'classifier']
+DECODER_LAYER_NAMES = ['bottleneck_4_0d', 'bottleneck_4_1d', 'bottleneck_4_2d'
+                       'bottleneck_5_0d', 'bottleneck_5_1d', 'fullconv']
 
 
 class Encoder(nn.Module):
@@ -213,7 +218,6 @@ class Encoder(nn.Module):
             super(Encoder, self).__setattr__(layer_name, layer)
         self.layers = layers
 
-    
     def forward(self, input):
         pooling_stack = []
         output = input
