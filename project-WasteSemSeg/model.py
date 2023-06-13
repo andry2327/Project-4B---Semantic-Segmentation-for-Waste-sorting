@@ -91,7 +91,7 @@ class BottleNeck(nn.Module):
         input_stride = 2 if downsampling else 1
         # First projection with 1x1 kernel (2x2 for downsampling)
         conv1x1_1 = nn.Conv2d(input_channels, internal,
-                              input_stride, input_stride, bias=False)
+                              input_stride, input_stride, bias=False, device='cuda:0')
         batch_norm1 = nn.BatchNorm2d(internal, 1e-3)
         prelu1 = self._prelu(internal, use_relu)
         self.block1x1_1 = nn.Sequential(conv1x1_1, batch_norm1, prelu1)
@@ -99,11 +99,11 @@ class BottleNeck(nn.Module):
         conv = None
         if downsampling:
             self.pool = nn.MaxPool2d(2, stride=2, return_indices=True)
-            conv = nn.Conv2d(internal, internal, 3, stride=1, padding=1)
+            conv = nn.Conv2d(internal, internal, 3, stride=1, padding=1, device='cuda:0')
         elif upsampling:
             # padding is replaced with spatial convolution without bias.
             spatial_conv = nn.Conv2d(input_channels, output_channels, 1,
-                                     bias=False)
+                                     bias=False, device='cuda:0')
             batch_norm = nn.BatchNorm2d(output_channels, 1e-3)
             self.conv_before_unpool = nn.Sequential(spatial_conv, batch_norm)
             self.unpool = nn.MaxUnpool2d(2)
@@ -111,21 +111,21 @@ class BottleNeck(nn.Module):
                                       stride=2, padding=1, output_padding=1)
         elif dilated:
             conv = nn.Conv2d(internal, internal, 3, padding=dilation_rate,
-                             dilation=dilation_rate)
+                             dilation=dilation_rate, device='cuda:0')
         elif asymmetric:
             conv1 = nn.Conv2d(internal, internal, [5, 1], padding=(2, 0),
-                              bias=False)
-            conv2 = nn.Conv2d(internal, internal, [1, 5], padding=(0, 2))
+                              bias=False, device='cuda:0')
+            conv2 = nn.Conv2d(internal, internal, [1, 5], padding=(0, 2), device='cuda:0')
             conv = nn.Sequential(conv1, conv2)
         else:
-            conv = nn.Conv2d(internal, internal, 3, padding=1)
+            conv = nn.Conv2d(internal, internal, 3, padding=1, device='cuda:0')
 
         batch_norm = nn.BatchNorm2d(internal, 1e-3)
         prelu = self._prelu(internal, use_relu)
         self.middle_block = nn.Sequential(conv, batch_norm, prelu)
 
         # Final projection with 1x1 kernel
-        conv1x1_2 = nn.Conv2d(internal, output_channels, 1, bias=False)
+        conv1x1_2 = nn.Conv2d(internal, output_channels, 1, bias=False, device='cuda:0')
         batch_norm2 = nn.BatchNorm2d(output_channels, 1e-3)
         prelu2 = self._prelu(output_channels, use_relu)
         self.block1x1_2 = nn.Sequential(conv1x1_2, batch_norm2, prelu2)
