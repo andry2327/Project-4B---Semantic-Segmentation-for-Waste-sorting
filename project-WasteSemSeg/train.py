@@ -112,7 +112,7 @@ def main(net_name = 'Enet', checkpoint = False):
     for epoch in range(start_epoch, start_epoch+cfg.TRAIN.MAX_EPOCH):
 
         _t['train time'].tic()
-        train(train_loader, net, criterion, optimizer, epoch)
+        train(train_loader, net, criterion, optimizer, scheduler, epoch)
         _t['train time'].toc(average=False)
         print('🟠 TRAINING time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH, _t['train time'].diff))
         print("learning rate: ",optimizer.param_groups[0]['lr'])
@@ -121,8 +121,7 @@ def main(net_name = 'Enet', checkpoint = False):
         mIoU_list.append(mIoU)
         _t['val time'].toc(average=False)
         print('🟢 VALIDATION time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH,  _t['val time'].diff))
-        #cutting the learning rate.
-        scheduler.step()
+        
 
         if(epoch>=19 and epoch+1%10==0) :
             optimizer, scheduler, train_loader = change_training(optimizer, scheduler, train_loader, net, epoch, mIoU_list)
@@ -143,7 +142,7 @@ def main(net_name = 'Enet', checkpoint = False):
     return mIoU_list
 
 
-def train(train_loader, net, criterion, optimizer, epoch):
+def train(train_loader, net, criterion, optimizer, scheduler, epoch):
 
     train_progress = tqdm(total=len(train_loader), desc=f"Epoch {epoch+1} Training", leave=False)
 
@@ -158,6 +157,7 @@ def train(train_loader, net, criterion, optimizer, epoch):
         loss = criterion(outputs, labels)
         loss.backward()
         optimizer.step()
+        scheduler.step()
 
         train_progress.update(1)
     
