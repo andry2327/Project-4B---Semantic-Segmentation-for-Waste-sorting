@@ -188,13 +188,13 @@ class Encoder(nn.Module):
                                  downsampling=True))
         
         # Bottleneck 1.x
-        for i in range(4):
+        for i in range(6):
             layers.append(BottleNeck(64, 64, regularlizer_prob=0.01))
         
         # Section 2
         layers.append(BottleNeck(64, 128, downsampling=True)) # Only 1st time
         # Section 2 and 3
-        for i in range(2):
+        for i in range(3):
             layers.append(BottleNeck(128, 128))
             layers.append(BottleNeck(128, 128, dilated=True, dilation_rate=2))
             layers.append(BottleNeck(128, 128, asymmetric=True))
