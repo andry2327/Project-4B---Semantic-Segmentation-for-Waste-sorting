@@ -11,7 +11,7 @@ class SizeEstimator(object):
         for a given input size
         '''
         self.model = model
-        self.input_size = input_size.cuda()
+        self.input_size = input_size
         self.bits = bits
         return
 
@@ -31,7 +31,7 @@ class SizeEstimator(object):
 
     def get_output_sizes(self):
         '''Run sample input through each layer to get output sizes'''
-        input_ = Variable(torch.FloatTensor(*self.input_size), volatile=True)
+        input_ = Variable(torch.FloatTensor(*self.input_size), volatile=True).cuda()
         mods = list(self.model.modules())
         out_sizes = []
         for i in range(1, len(mods)):
