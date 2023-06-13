@@ -206,7 +206,7 @@ class Encoder(nn.Module):
             
         # only training encoder
         if only_encode:
-            layers.append(nn.Conv2d(128, num_classes, 1))
+            layers.append(nn.Conv2d(128, num_classes, 1), device='cuda:0')
 
         for layer, layer_name in zip(layers, ENCODER_LAYER_NAMES):
             super(Encoder, self).__setattr__(layer_name, layer)
