@@ -11,7 +11,7 @@ class SizeEstimator(object):
         for a given input size
         '''
         self.model = model
-        self.input_size = input_size
+        self.input_size = input_size.cuda()
         self.bits = bits
         return
 
