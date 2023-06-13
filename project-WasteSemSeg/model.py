@@ -157,7 +157,6 @@ class BottleNeck(nn.Module):
         other_net = nn.Sequential(self.block1x1_1, self.middle_block,
                                   self.block1x1_2)
         other = other_net(input)
-        print(f'main.shape = {main.shape}')
         output = F.relu(main + other)
         if (self.downsampling):
             return output, indices
@@ -212,7 +211,7 @@ class Encoder(nn.Module):
             
         # only training encoder
         if only_encode:
-            layers.append(nn.Conv2d(128, num_classes, 1))
+            layers.append(nn.Conv2d(128, num_classes, 1, device='cuda:0'))
 
         for layer, layer_name in zip(layers, ENCODER_LAYER_NAMES):
             super(Encoder, self).__setattr__(layer_name, layer)
