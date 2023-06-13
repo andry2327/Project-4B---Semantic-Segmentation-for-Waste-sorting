@@ -122,9 +122,9 @@ def main(net_name = 'Enet', checkpoint = False):
         _t['val time'].toc(average=False)
         print('🟢 VALIDATION time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH,  _t['val time'].diff))
         
-
-        if(epoch>=19 and epoch+1%10==0) :
-            optimizer, scheduler, train_loader = change_training(optimizer, scheduler, train_loader, net, epoch, mIoU_list)
+    
+        #if(epoch>=19 and epoch+1%10==0) :
+        #    optimizer, scheduler, train_loader = change_training(optimizer, scheduler, train_loader, net, epoch, mIoU_list)
             
         # save the model state every few epochs 
         if (epoch+1) % save_every == 0:
