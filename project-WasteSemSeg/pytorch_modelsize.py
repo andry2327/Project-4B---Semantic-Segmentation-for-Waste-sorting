@@ -31,7 +31,8 @@ class SizeEstimator(object):
 
     def get_output_sizes(self):
         '''Run sample input through each layer to get output sizes'''
-        input_ = Variable(torch.FloatTensor(*self.input_size), volatile=True).cuda()
+        input_ = Variable(torch.FloatTensor(*self.input_size), volatile=True)
+        print(input_)
         mods = list(self.model.modules())
         out_sizes = []
         for i in range(1, len(mods)):
