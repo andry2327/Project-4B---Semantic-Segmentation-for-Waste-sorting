@@ -157,7 +157,7 @@ def train(train_loader, net, criterion, optimizer, scheduler, epoch):
         loss = criterion(outputs, labels)
         loss.backward()
         optimizer.step()
-        #scheduler.step()
+        scheduler.step()
 
         train_progress.update(1)
     
