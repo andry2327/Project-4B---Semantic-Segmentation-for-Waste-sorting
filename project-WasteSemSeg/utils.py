@@ -176,14 +176,11 @@ def get_pruned_model(model, method=prune.RandomUnstructured, amount=0.8):
     ind = 0
 
     for name, module in model.named_modules():
-        print(name)
-        print('🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹🔹')
-        #print(module)
-        #print('🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩')
-    
-    _, module_icnet = model.named_modules()
 
-    recursive_module_name(module_icnet, method, amount)
+        if isinstance(module, torch.nn):
+            method(module, name='weight', amount=amount)
+            is_pruned = torch.nn.utils.prune.is_pruned(module)
+            print(f'pruned layer: {is_pruned}')
 
     '''  t = (module, name)
         parameters_to_prune.append(t)
@@ -202,8 +199,6 @@ def get_pruned_model(model, method=prune.RandomUnstructured, amount=0.8):
     is_pruned = torch.nn.utils.prune.is_pruned(module_DEBUG)
     print(f'pruned: {is_pruned}')
     '''
-
-    
 
     return model
 
