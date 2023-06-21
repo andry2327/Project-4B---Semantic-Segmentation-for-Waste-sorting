@@ -1,4 +1,5 @@
 import torch
+import inspect
 from torch import nn
 import torch.nn.functional as F
 import numpy as np
@@ -177,7 +178,8 @@ def get_pruned_model(model, method=prune.random_unstructured, amount=0.8):
 
     for name, module in model.named_modules():
 
-        if isinstance(module, nn.Module):
+        signature = inspect.signature(type(module))
+        if 'self.weigth' in signature.parameters:
             method(module, name='weight', amount=amount)
             is_pruned = torch.nn.utils.prune.is_pruned(module)
             print(f'pruned layer: {is_pruned}')
