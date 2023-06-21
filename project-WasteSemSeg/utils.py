@@ -157,7 +157,7 @@ def load_checkpoints(net_name, net, optimizer):
 
 # PRUNING AND QUANTIZATION
 
-def recursive_module_name(module, method, amount):
+def recursive_module_name(module, method, amount): # 😢
     
     if isinstance(module, torch.nn):
         method(module, name='weight', amount=amount)
@@ -177,7 +177,7 @@ def get_pruned_model(model, method=prune.RandomUnstructured, amount=0.8):
 
     for name, module in model.named_modules():
 
-        if isinstance(module, torch.nn):
+        if isinstance(module, nn.Module):
             method(module, name='weight', amount=amount)
             is_pruned = torch.nn.utils.prune.is_pruned(module)
             print(f'pruned layer: {is_pruned}')
