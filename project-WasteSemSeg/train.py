@@ -13,7 +13,7 @@ from tensorboardX import SummaryWriter
 
 from model import ENet
 from bisenet import BiSeNetV2
-from pytorchcv.model_provider import get_model as ptcv_get_model
+from pytorchcv.model_provider import get_model as ptcv_get_model # https://github.com/osmr/imgclsmob/blob/master/pytorch/pytorchcv/models/icnet.py
 
 from config import cfg
 from loading_data import loading_data
