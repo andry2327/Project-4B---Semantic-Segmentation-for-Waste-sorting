@@ -160,11 +160,12 @@ def load_checkpoints(net_name, net, optimizer):
 def get_pruned_model(model, method=prune.RandomUnstructured, amount=0.8):
 
     parameters_to_prune = []
+    ind = 0
 
     for name, module in model.named_modules():
 
         t = (module, name)
-        print(t)
+        print(ind)
         parameters_to_prune.append(t)
     
     parameters_to_prune = tuple(parameters_to_prune)
