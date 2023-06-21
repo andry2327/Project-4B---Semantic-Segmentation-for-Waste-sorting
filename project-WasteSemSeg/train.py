@@ -48,7 +48,7 @@ def set_net(net_name):
         net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
     else : 
         #net =  ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False).eval().cuda()
-        net = icnet(num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False).eval().cuda()
+        net = icnet(in_size=(224, 448), num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False).eval().cuda()
     return net
 
 #are we in a plateau?
