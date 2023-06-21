@@ -175,7 +175,7 @@ def get_pruned_model(model, method=prune.RandomUnstructured, amount=0.8):
     parameters_to_prune = []
     ind = 0
 
-    for name, module in module.named_modules():
+    for name, module in model.named_modules():
         print(name)
         print(module)
         print('🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩')
