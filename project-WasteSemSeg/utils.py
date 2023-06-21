@@ -6,6 +6,7 @@ from PIL import Image
 import os
 import shutil
 from config import cfg
+import torch.nn.utils.prune as prune
 
 import matplotlib.pyplot as plt
 
@@ -151,3 +152,27 @@ def load_checkpoints(net_name, net, optimizer):
 
             print(f"✅ Model '{path_pth_file}' Loaded\n")
             return net, optimizer, start_epoch, mIoU_list
+    
+
+
+# PRUNING AND QUANTIZATION
+
+def get_pruned_model(model, method=prune.RandomUnstructured, amount=0.8):
+
+    parameters_to_prune = []
+
+    for name, module in model.named_modules():
+
+        t = (module, name)
+        parameters_to_prune.append(t)
+    
+    parameters_to_prune = tuple(parameters_to_prune)
+
+    prune.global_unstructured(
+        parameters_to_prune,
+        pruning_method=method,
+        amount=amount
+    )
+
+    return model
+
