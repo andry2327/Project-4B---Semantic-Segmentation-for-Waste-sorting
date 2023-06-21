@@ -170,7 +170,7 @@ def get_pruned_model(model, method=prune.RandomUnstructured, amount=0.8):
     parameters_to_prune = tuple(parameters_to_prune)
     # DEBUG
     parameters_to_prune = parameters_to_prune[0]
-    module_DEBUG = parameters_to_prune[0][0]
+    module_DEBUG = parameters_to_prune[0]
 
     prune.global_unstructured(
         parameters_to_prune,
