@@ -45,7 +45,7 @@ def set_net(net_name):
     elif (net_name == 'bisenet'):
         net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
     else : 
-        net =  ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False).eval().cuda()
+        net =  ptcv_get_model('icnet_resnetd50b_cityscapes', num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False).eval().cuda()
     return net
 
 def main(net_name = 'Enet', checkpoint = False):
