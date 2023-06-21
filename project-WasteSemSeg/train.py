@@ -14,6 +14,7 @@ from tensorboardX import SummaryWriter
 from model import ENet
 from bisenet import BiSeNetV2
 from pytorchcv.model_provider import get_model as ptcv_get_model # https://github.com/osmr/imgclsmob/blob/master/pytorch/pytorchcv/models/icnet.py
+from icnet import icnet_resnetd50b_cityscapes as icnet
 
 from config import cfg
 from loading_data import loading_data
@@ -46,7 +47,8 @@ def set_net(net_name):
     elif (net_name == 'bisenet'):
         net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
     else : 
-        net =  ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False).eval().cuda()
+        #net =  ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False).eval().cuda()
+        net = icnet(num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False)
     return net
 
 #are we in a plateau?
