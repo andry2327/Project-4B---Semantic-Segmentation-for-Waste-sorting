@@ -170,7 +170,7 @@ def recursive_module_name(module, method, amount): # 😢
     
     return
 
-def get_pruned_model(model, method=prune.RandomUnstructured, amount=0.8):
+def get_pruned_model(model, method=prune.random_unstructured, amount=0.8):
 
     parameters_to_prune = []
     ind = 0
