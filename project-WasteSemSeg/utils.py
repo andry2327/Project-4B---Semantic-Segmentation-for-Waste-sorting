@@ -165,16 +165,21 @@ def get_pruned_model(model, method=prune.RandomUnstructured, amount=0.8):
     for name, module in model.named_modules():
 
         t = (module, name)
-        print(ind)
         parameters_to_prune.append(t)
     
     parameters_to_prune = tuple(parameters_to_prune)
+    # DEBUG
+    parameters_to_prune = parameters_to_prune[0]
+    module_DEBUG = parameters_to_prune[0][0]
 
     prune.global_unstructured(
         parameters_to_prune,
         pruning_method=method,
         amount=amount
     )
+
+    is_pruned = torch.nn.utils.prune.is_pruned(module_DEBUG)
+    print(f'pruned: {is_pruned}')
 
     return model
 
