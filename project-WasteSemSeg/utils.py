@@ -176,6 +176,8 @@ def get_pruned_model(model, method=prune.RandomUnstructured, amount=0.8):
     ind = 0
 
     print(model.named_modules())
+    print()
+    print(len(model.named_modules()))
     _, module_icnet = model.named_modules()
 
     recursive_module_name(module_icnet, method, amount)
