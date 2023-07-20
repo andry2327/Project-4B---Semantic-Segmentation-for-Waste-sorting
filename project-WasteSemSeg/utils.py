@@ -176,15 +176,16 @@ def get_pruned_model(model, method=prune.random_unstructured, amount=0.8):
     parameters_to_prune = []
     ind = 0
 
-    #for values in model.state_dict():
-    for name, module in model.named_modules():
+    for values in model.state_dict():
+    #for name, module in model.named_modules():
 
         #module = values
-        #print(values, "\t", model.state_dict()[values].size())
-        print(f'name = {name}')
+        print(values, "\t", model.state_dict()[values].size())
+        
+        '''print(f'name = {name}')
         method(module, name='weight', amount=amount)
         is_pruned = torch.nn.utils.prune.is_pruned(module)
-        print(f'pruned layer: {is_pruned}')
+        print(f'pruned layer: {is_pruned}')'''
 
         '''signature = inspect.signature(type(module))
         print(signature.)
