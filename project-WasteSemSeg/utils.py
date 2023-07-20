@@ -175,17 +175,33 @@ def get_pruned_model(model, method=prune.random_unstructured, amount=0.8):
 
     parameters_to_prune = []
     ind = 0
+    N_modules = 0
+    N_pruned_modules = 0
 
     #for values in model.state_dict():
     for name, module in model.named_modules():
 
         print(f'name = {name}')
-        #module = values
-        #print(values, "\t", model.state_dict()[values].size())
+
+        # pruning Conv2d
         if isinstance(module, torch.nn.Conv2d):
             method(module, name='weight', amount=0.2)
+            N_pruned_modules += 1
         is_pruned = torch.nn.utils.prune.is_pruned(module)
         print(f'    pruned layer: {is_pruned}')
+
+        # pruning Sequential
+        if isinstance(module, torch.nn.Sequential):
+            method(module, name='weight', amount=0.2)
+            N_pruned_modules += 1
+        is_pruned = torch.nn.utils.prune.is_pruned(module)
+        print(f'    pruned layer: {is_pruned}')
+
+        N_modules += 1
+
+        print("\n-----------------------------------\n")
+        print(f'TOT PRUNED = {N_pruned_modules}/{N_modules}')
+
         '''print(f'name = {name}')
         method(module, name='weight', amount=amount)
         is_pruned = torch.nn.utils.prune.is_pruned(module)
