@@ -190,24 +190,24 @@ def get_pruned_model(model, method=prune.random_unstructured, amount=0.8):
         is_pruned = torch.nn.utils.prune.is_pruned(module)
         print(f'    pruned layer: {is_pruned}')
 
-        # pruning Sequential
+        '''# pruning Sequential
         if isinstance(module, torch.nn.Linear):
             method(module, name='weight', amount=amount)
             N_pruned_modules += 1
         is_pruned = torch.nn.utils.prune.is_pruned(module)
-        print(f'    pruned layer: {is_pruned}')
+        print(f'    pruned layer: {is_pruned}')'''
 
         N_modules += 1
 
-        print("\n-----------------------------------\n")
-        print(f'TOT PRUNED = {N_pruned_modules}/{N_modules}')
+    print("\n-----------------------------------\n")
+    print(f'TOT PRUNED = {N_pruned_modules}/{N_modules}')
 
-        '''print(f'name = {name}')
+    '''print(f'name = {name}')
         method(module, name='weight', amount=amount)
         is_pruned = torch.nn.utils.prune.is_pruned(module)
         print(f'pruned layer: {is_pruned}')'''
 
-        '''signature = inspect.signature(type(module))
+    '''signature = inspect.signature(type(module))
         print(signature.)
         if 'weight' in signature.parameters:
             method(module, name='weight', amount=amount)
