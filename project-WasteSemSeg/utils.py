@@ -188,8 +188,9 @@ def get_pruned_model(model, method=prune.random_unstructured, amount=0.8):
         if isinstance(module, torch.nn.Conv2d):
             method(module, name='weight', amount=amount)
             N_pruned_modules += 1
-        if hasattr(module, 'weight'):
-            print(f"Weight dtype: {module.weight.dtype}")
+            if hasattr(module, 'weight'):
+                print(f"Weight dtype: {module.weight.dtype}")
+        
         is_pruned = torch.nn.utils.prune.is_pruned(module)
         print(f'    pruned layer: {is_pruned}')
 
