@@ -185,14 +185,14 @@ def get_pruned_model(model, method=prune.random_unstructured, amount=0.8):
 
         # pruning Conv2d
         if isinstance(module, torch.nn.Conv2d):
-            method(module, name='weight', amount=0.2)
+            method(module, name='weight', amount=amount)
             N_pruned_modules += 1
         is_pruned = torch.nn.utils.prune.is_pruned(module)
         print(f'    pruned layer: {is_pruned}')
 
         # pruning Sequential
-        if isinstance(module, torch.nn.BatchNorm2d):
-            method(module, name='weight', amount=0.2)
+        if isinstance(module, torch.nn.Linear):
+            method(module, name='weight', amount=amount)
             N_pruned_modules += 1
         is_pruned = torch.nn.utils.prune.is_pruned(module)
         print(f'    pruned layer: {is_pruned}')
