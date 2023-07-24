@@ -10,6 +10,7 @@ from config import cfg
 import torch.nn.utils.prune as prune
 
 from train import set_net
+from torch import optim
 
 import matplotlib.pyplot as plt
 
