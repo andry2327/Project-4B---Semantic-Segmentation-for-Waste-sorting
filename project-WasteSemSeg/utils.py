@@ -159,6 +159,7 @@ def load_checkpoints(net_name, net, optimizer):
 
 
 def create_checkpoint_net (net_name):
+    net_name = net_name.lower()
     net =  set_net(net_name)
     if len(cfg.TRAIN.GPU_ID)>1:
         net = torch.nn.DataParallel(net, device_ids=cfg.TRAIN.GPU_ID).cuda()
