@@ -202,35 +202,5 @@ def get_pruned_model(model, method=prune.random_unstructured, amount=0.8):
     print("\n-----------------------------------\n")
     print(f'TOT PRUNED = {N_pruned_modules}/{N_modules}')
 
-    '''print(f'name = {name}')
-        method(module, name='weight', amount=amount)
-        is_pruned = torch.nn.utils.prune.is_pruned(module)
-        print(f'pruned layer: {is_pruned}')'''
-
-    '''signature = inspect.signature(type(module))
-        print(signature.)
-        if 'weight' in signature.parameters:
-            method(module, name='weight', amount=amount)
-            is_pruned = torch.nn.utils.prune.is_pruned(module)
-            print(f'pruned layer: {is_pruned}')'''
-
-    '''  t = (module, name)
-        parameters_to_prune.append(t)
-    
-    parameters_to_prune = tuple(parameters_to_prune)
-    # DEBUG
-    parameters_to_prune = parameters_to_prune[0]
-    module_DEBUG = parameters_to_prune[0]
-
-    prune.global_unstructured(
-        parameters_to_prune,
-        pruning_method=method,
-        amount=amount
-    )
-    
-    is_pruned = torch.nn.utils.prune.is_pruned(module_DEBUG)
-    print(f'pruned: {is_pruned}')
-    '''
-
     return model
 
