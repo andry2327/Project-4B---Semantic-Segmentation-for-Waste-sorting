@@ -9,6 +9,8 @@ import shutil
 from config import cfg
 import torch.nn.utils.prune as prune
 
+from train import set_net
+
 import matplotlib.pyplot as plt
 
 plt.rcParams['figure.dpi'] = 150
@@ -153,7 +155,20 @@ def load_checkpoints(net_name, net, optimizer):
 
             print(f"✅ Model '{path_pth_file}' Loaded\n")
             return net, optimizer, start_epoch, mIoU_list
-    
+
+
+def create_checkpoint_net (net_name):
+    net =  set_net(net_name)
+    if len(cfg.TRAIN.GPU_ID)>1:
+        net = torch.nn.DataParallel(net, device_ids=cfg.TRAIN.GPU_ID).cuda()
+    else:
+        net=net.cuda()
+    net.train()
+    optimizer = optim.Adam(net.parameters(), lr=cfg.TRAIN.LR, weight_decay=cfg.TRAIN.WEIGHT_DECAY)
+    net, optimizer, start_epoch, mIoU_list = load_checkpoints(net_name, net, optimizer)
+    print("--model loaded successfully--")
+    return net
+
 
 
 # PRUNING AND QUANTIZATION
@@ -203,4 +218,5 @@ def get_pruned_model(model, method=prune.random_unstructured, amount=0.8):
     print(f'TOT PRUNED = {N_pruned_modules}/{N_modules}')
 
     return model
+
 
