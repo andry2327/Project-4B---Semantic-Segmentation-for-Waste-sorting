@@ -168,5 +168,4 @@ def create_checkpoint_net (net_name):
     net.train()
     optimizer = optim.Adam(net.parameters(), lr=cfg.TRAIN.LR, weight_decay=cfg.TRAIN.WEIGHT_DECAY)
     net, optimizer, start_epoch, mIoU_list = load_checkpoints(net_name, net, optimizer)
-    print("--model loaded successfully--")
     return net

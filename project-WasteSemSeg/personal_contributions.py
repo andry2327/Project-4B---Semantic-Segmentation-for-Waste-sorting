@@ -42,8 +42,6 @@ def get_pruned_model(model, method=prune.random_unstructured, amount=0.8):
 
     for name, module in model.named_modules():
 
-        print(f'name = {name}')
-
         # pruning Conv2d -> 72/338
         if isinstance(module, torch.nn.Conv2d):
             method(module, name='weight', amount=amount)
@@ -54,8 +52,7 @@ def get_pruned_model(model, method=prune.random_unstructured, amount=0.8):
 
         N_modules += 1
 
-    print("\n-----------------------------------\n")
-    print(f'TOT PRUNED = {N_pruned_modules}/{N_modules}')
+    print(f'TOT layers pruned = {N_pruned_modules}/{N_modules}')
 
     return model
 
