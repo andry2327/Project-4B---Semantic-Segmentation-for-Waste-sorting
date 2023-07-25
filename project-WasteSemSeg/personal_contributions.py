@@ -63,7 +63,7 @@ def get_pruned_model(model, method=prune.random_unstructured, amount=0.8):
 
 '''
 
-def get_quantized_model(model, val_loader):
+def get_quantized_model(model, val_loader, net_str):
 
     backend = "fbgemm" if "x86" in platform.machine() else "qnnpack"
     counter = 0
@@ -75,19 +75,21 @@ def get_quantized_model(model, val_loader):
     model_prepared = quantize_fx.prepare_fx(m, qconfig_dict, torch.randn(cfg.VAL.BATCH_SIZE, 3, 224, 448))
 
     # Calibrate - Use representative (validation) data.
-    validation_progress = tqdm(total=len(val_loader), desc=f"Epoch {counter+1} Validation", leave=False)
+    callibration_progress = tqdm(total=len(val_loader), desc=f"Calibration", leave=False)
     with torch.inference_mode():
         for vi, data in enumerate(val_loader, 0):
             inputs, labels = data
             inputs = Variable(inputs, volatile=True).cuda()
             model_prepared(inputs)
-            validation_progress.update(1)
+            callibration_progress.update(1)
 
     # quantize
-    validation_progress.close()
+    callibration_progress.close()
     model_prepared = model_prepared.to('cpu')
     model_prepared.eval()
     model_quantized = quantize_fx.convert_fx(model_prepared)
+
+    print(f"✅ {net_str} model quantized from checkpoint") 
 
     return model_quantized
 
@@ -111,7 +113,7 @@ def get_qmodel_param_size(qmodel):
 
     return (total_size_mb, none_type_counter)
 
-def validate_q(val_loader, net, criterion, optimizer, epoch, restore):
+def validate_q(val_loader, net, criterion):
     net.eval()
     criterion.cpu()
     input_batches = []
@@ -119,7 +121,7 @@ def validate_q(val_loader, net, criterion, optimizer, epoch, restore):
     label_batches = []
     iou_ = 0.0
     iou_classes_=[0,0,0,0,0]
-    validation_progress = tqdm(total=len(val_loader), desc=f"Epoch {epoch+1} Validation", leave=False)
+    validation_progress = tqdm(total=len(val_loader), desc=f"Validation", leave=False)
     for vi, data in enumerate(val_loader, 0):
         inputs, labels = data
         inputs = Variable(inputs, volatile=True)
@@ -150,6 +152,7 @@ def validate_q(val_loader, net, criterion, optimizer, epoch, restore):
     mean_iu = iou_/len(val_loader)
     iou_classes_ = [x / len(val_loader) for x in iou_classes_]
 
+    print()
     print('[avg mean IoU =  %.4f]' % (mean_iu))
     print(f'mIoU C1 (Aluminium) = {round(iou_classes_[0], 4)}   mIoU C2 (Paper) = {round(iou_classes_[1], 4)}   mIoU C3 (Bottle) = {round(iou_classes_[2], 4)}   mIoU C4 (Nylon) = {round(iou_classes_[3], 4)}')
 
