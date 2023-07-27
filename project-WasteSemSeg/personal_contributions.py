@@ -66,7 +66,6 @@ def get_pruned_model(model, method=prune.random_unstructured, amount=0.8):
 def get_quantized_model(model, val_loader, net_str):
 
     backend = "fbgemm" if "x86" in platform.machine() else "qnnpack"
-    counter = 0
     m = copy.deepcopy(model)
     m.eval()
     qconfig_dict = {"": torch.quantization.get_default_qconfig(backend)}
@@ -113,30 +112,20 @@ def get_qmodel_param_size(qmodel):
 
     return (total_size_mb, none_type_counter)
 
-def validate_q(val_loader, net, criterion):
+def validate_(val_loader, net, criterion, is_quantized=False):
     net.eval()
     criterion.cpu()
-    input_batches = []
-    output_batches = []
-    label_batches = []
     iou_ = 0.0
     iou_classes_=[0,0,0,0,0]
     validation_progress = tqdm(total=len(val_loader), desc=f"Validation", leave=False)
     for vi, data in enumerate(val_loader, 0):
         inputs, labels = data
-        inputs = Variable(inputs, volatile=True)
-        labels = Variable(labels, volatile=True)
+        inputs = Variable(inputs, volatile=True).cuda() if not is_quantized else Variable(inputs, volatile=True)
+        labels = Variable(labels, volatile=True).cuda() if not is_quantized else Variable(labels, volatile=True)
         outputs = net.forward(inputs)
         #for binary classification
         # outputs[outputs>0.5] = 1
         # outputs[outputs<=0.5] = 0
-        
-        # multi-classification
-        # outputs[outputs<=0.5] = 0 #background
-        # outputs[(outputs>0.5) & (outputs<=1.5)] = 1 #aluminium
-        # outputs[(outputs>1.5) & (outputs<=2.5)] = 2 #paper
-        # outputs[(outputs>2.5) & (outputs<=3.5)] = 3 #bottle
-        # outputs[outputs>3.5] = 4 #nylon
 
         softmax = nn.Softmax(dim=1)
         outputs = torch.argmax(softmax(outputs),dim=1)
