@@ -8,8 +8,6 @@ import segmentation_models_pytorch.losses as losses
 def set_loss(loss_name):
     loss_name = loss_name.lower()
     match loss_name:
-        case "cross_entropy":
-            loss = torch.nn.CrossEntropyLoss().cuda()
         case "focal":
             loss = losses.FocalLoss("multiclass", gamma = 2).cuda()
             # possible values for gamma :0.1, 0.5, 1, 5 
@@ -17,9 +15,11 @@ def set_loss(loss_name):
             loss = losses.LovaszLoss("multiclass").cuda()
         case "dice":
             loss = losses.DiceLoss("multiclass").cuda()
-        case "class_balanced_focal_loss":
+        case "cbfl":
             #loss = CB_loss
-            loss = CB_loss(cfg.DATA.NUM_CLASSES, 0.9, 2) # we need to change the function, because we need a class.
+            loss = CB_loss(cfg.DATA.NUM_CLASSES, 0.9, 2).cuda() # we need to change the function, because we need a class.
+        case _:
+            loss = torch.nn.CrossEntropyLoss().cuda()
     return loss
 
 def focal_loss(labels, logits, alpha, gamma):
@@ -75,8 +75,7 @@ class CB_loss(nn.Module):
       self.gamma = gamma        
 
     def forward(self, labels, logits):
-      
-      logits.cpu()
+
       samples_per_cls = np.bincount(logits, minlength=self.no_of_classes) #https://github.com/richardaecn/class-balanced-loss/blob/master/data.ipynb
       effective_num = 1.0 - np.power(self.beta, samples_per_cls)
       weights = (1.0 - self.beta) / np.array(effective_num)
