@@ -15,6 +15,9 @@ from model import ENet
 from bisenet import BiSeNetV2 
 from icnet import icnet_resnetd50b_cityscapes as icnet # https://github.com/osmr/imgclsmob/blob/master/pytorch/pytorchcv/models/icnet.py
 
+import segmentation_models_pytorch.losses as losses
+from class_balance_loss import CB_loss
+
 from config import cfg
 from loading_data import loading_data
 from utils import *
@@ -64,7 +67,24 @@ def change_training(optimizer, scheduler, train_loader,net, epoch, miou):
         #train_loader = train_augmented_loader
     return optimizer, scheduler, train_loader
 
-def main(net_name = 'Enet', checkpoint = False):
+def set_loss(loss_name):
+    loss_name = loss_name.lower()
+    match loss_name:
+        case "cross_entropy":
+            loss = torch.nn.CrossEntropyLoss().cuda()
+        case "focal":
+            loss = losses.FocalLoss("multiclass", gamma = 2) 
+            # possible values for gamma :0.1, 0.5, 1, 5 
+        case "lovasz":
+            loss = losses.LovaszLos("multiclass")
+        case "dice":
+            loss = losses.DiceLoss("multiclass")
+        case "class_balanced_focal_loss":
+            #loss = CB_loss
+            loss = "" # we need to change the function, because we need a class.
+    return loss
+
+def main(net_name = 'Enet', loss_name = 'CrossEntropy', checkpoint = False):
 
     net_name = net_name.lower()
 

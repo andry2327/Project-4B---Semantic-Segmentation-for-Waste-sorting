@@ -74,16 +74,16 @@ def get_quantized_model(model, val_loader, net_str):
     model_prepared = quantize_fx.prepare_fx(m, qconfig_dict, torch.randn(cfg.VAL.BATCH_SIZE, 3, 224, 448))
 
     # Calibrate - Use representative (validation) data.
-    callibration_progress = tqdm(total=len(val_loader), desc=f"Calibration", leave=False)
+    calibration_progress = tqdm(total=len(val_loader), desc=f"Calibration", leave=False)
     with torch.inference_mode():
         for vi, data in enumerate(val_loader, 0):
             inputs, labels = data
             inputs = Variable(inputs, volatile=True).cuda()
             model_prepared(inputs)
-            callibration_progress.update(1)
+            calibration_progress.update(1)
 
     # quantize
-    callibration_progress.close()
+    calibration_progress.close()
     model_prepared = model_prepared.to('cpu')
     model_prepared.eval()
     model_quantized = quantize_fx.convert_fx(model_prepared)
