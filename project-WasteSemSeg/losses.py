@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 import torch.nn as nn
-
+from config import cfg
 import segmentation_models_pytorch.losses as losses
 
 def set_loss(loss_name):
@@ -19,7 +19,7 @@ def set_loss(loss_name):
             loss = losses.DiceLoss("multiclass").cuda()
         case "class_balanced_focal_loss":
             #loss = CB_loss
-            loss = "" # we need to change the function, because we need a class.
+            loss = CB_loss(cfg.DATA.NUM_CLASSES, 0.9, 2) # we need to change the function, because we need a class.
     return loss
 
 def focal_loss(labels, logits, alpha, gamma):
