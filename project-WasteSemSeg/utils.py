@@ -139,7 +139,7 @@ def set_loss(loss_name):
             loss = losses.FocalLoss("multiclass", gamma = 2).cuda()
             # possible values for gamma :0.1, 0.5, 1, 5 
         case "lovasz":
-            loss = losses.LovaszLos("multiclass").cuda()
+            loss = losses.LovaszLoss("multiclass").cuda()
         case "dice":
             loss = losses.DiceLoss("multiclass").cuda()
         case "class_balanced_focal_loss":
