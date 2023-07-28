@@ -11,13 +11,6 @@ import torchvision.transforms as standard_transforms
 import torchvision.utils as vutils
 from tensorboardX import SummaryWriter
 
-from model import ENet
-from bisenet import BiSeNetV2 
-from icnet import icnet_resnetd50b_cityscapes as icnet # https://github.com/osmr/imgclsmob/blob/master/pytorch/pytorchcv/models/icnet.py
-
-import segmentation_models_pytorch.losses as losses
-from class_balance_loss import CB_loss
-
 from config import cfg
 from loading_data import loading_data
 from utils import *
@@ -33,24 +26,6 @@ pil_to_tensor = standard_transforms.ToTensor()
 #train_loader, train_augmented_loader, val_loader, restore_transform = loading_data()
 train_loader, val_loader, restore_transform = loading_data()
 
-def set_net(net_name):
-    net_name = net_name.lower()
-    if(net_name == 'enet'):
-        if cfg.TRAIN.STAGE=='all':
-            net = ENet(only_encode=False)
-            if cfg.TRAIN.PRETRAINED_ENCODER != '':
-                encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
-                del encoder_weight['classifier.bias']
-                del encoder_weight['classifier.weight']
-                # pdb.set_trace()
-                net.encoder.load_state_dict(encoder_weight)
-        elif cfg.TRAIN.STAGE =='encoder':
-            net = ENet(only_encode=True)
-    elif (net_name == 'bisenet'):
-        net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
-    else : 
-        net = icnet(in_size=(224, 448), num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False).eval().cuda()
-    return net
 
 #are we in a plateau?
 #we want to compare the mean of the last ten iteration with the value of the ten before. If there is a low improvement
@@ -67,22 +42,6 @@ def change_training(optimizer, scheduler, train_loader,net, epoch, miou):
         #train_loader = train_augmented_loader
     return optimizer, scheduler, train_loader
 
-def set_loss(loss_name):
-    loss_name = loss_name.lower()
-    match loss_name:
-        case "cross_entropy":
-            loss = torch.nn.CrossEntropyLoss().cuda()
-        case "focal":
-            loss = losses.FocalLoss("multiclass", gamma = 2).cuda()
-            # possible values for gamma :0.1, 0.5, 1, 5 
-        case "lovasz":
-            loss = losses.LovaszLos("multiclass").cuda()
-        case "dice":
-            loss = losses.DiceLoss("multiclass").cuda()
-        case "class_balanced_focal_loss":
-            #loss = CB_loss
-            loss = "" # we need to change the function, because we need a class.
-    return loss
 
 def main(net_name = 'Enet', loss_name = 'CrossEntropy', checkpoint = False):
 

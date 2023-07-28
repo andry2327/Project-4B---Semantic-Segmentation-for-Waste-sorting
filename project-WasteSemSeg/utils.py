@@ -7,10 +7,15 @@ from PIL import Image
 import os
 import shutil
 from config import cfg
-import torch.nn.utils.prune as prune
 
-from train import set_net
 from torch import optim
+
+from model import ENet
+from bisenet import BiSeNetV2 
+from icnet import icnet_resnetd50b_cityscapes as icnet # https://github.com/osmr/imgclsmob/blob/master/pytorch/pytorchcv/models/icnet.py
+
+import segmentation_models_pytorch.losses as losses
+from class_balance_loss import CB_loss
 
 import matplotlib.pyplot as plt
 
@@ -104,6 +109,43 @@ def scores(label_trues, label_preds, n_class):
             'Mean Acc : \t': acc_cls,
             'FreqW Acc : \t': fwavacc,
             'Mean IoU : \t': mean_iu,}, cls_iu
+
+# setting net
+def set_net(net_name):
+    net_name = net_name.lower()
+    if(net_name == 'enet'):
+        if cfg.TRAIN.STAGE=='all':
+            net = ENet(only_encode=False)
+            if cfg.TRAIN.PRETRAINED_ENCODER != '':
+                encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
+                del encoder_weight['classifier.bias']
+                del encoder_weight['classifier.weight']
+                # pdb.set_trace()
+                net.encoder.load_state_dict(encoder_weight)
+        elif cfg.TRAIN.STAGE =='encoder':
+            net = ENet(only_encode=True)
+    elif (net_name == 'bisenet'):
+        net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
+    else : 
+        net = icnet(in_size=(224, 448), num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False).eval().cuda()
+    return net
+
+def set_loss(loss_name):
+    loss_name = loss_name.lower()
+    match loss_name:
+        case "cross_entropy":
+            loss = torch.nn.CrossEntropyLoss().cuda()
+        case "focal":
+            loss = losses.FocalLoss("multiclass", gamma = 2).cuda()
+            # possible values for gamma :0.1, 0.5, 1, 5 
+        case "lovasz":
+            loss = losses.LovaszLos("multiclass").cuda()
+        case "dice":
+            loss = losses.DiceLoss("multiclass").cuda()
+        case "class_balanced_focal_loss":
+            #loss = CB_loss
+            loss = "" # we need to change the function, because we need a class.
+    return loss
 
 # PLOTS UTILS
 def showTicksLabels(xticks):
