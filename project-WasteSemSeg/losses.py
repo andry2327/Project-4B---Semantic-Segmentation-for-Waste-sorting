@@ -76,7 +76,7 @@ class CB_loss(nn.Module):
 
     def forward(self, labels, logits):
 
-      samples_per_cls = np.bincount(logits, min_length=self.no_of_classes) #https://github.com/richardaecn/class-balanced-loss/blob/master/data.ipynb
+      samples_per_cls = np.bincount(logits, minlength=self.no_of_classes) #https://github.com/richardaecn/class-balanced-loss/blob/master/data.ipynb
       effective_num = 1.0 - np.power(self.beta, samples_per_cls)
       weights = (1.0 - self.beta) / np.array(effective_num)
       weights = weights / np.sum(weights) * self.no_of_classes
