@@ -43,7 +43,7 @@ def change_training(optimizer, scheduler, train_loader,net, epoch, miou):
     return optimizer, scheduler, train_loader
 
 
-def main(net_name = 'Enet', loss_name = 'CrossEntropy', checkpoint = False):
+def main(net_name = 'Enet', loss_name = 'Cross_Entropy', checkpoint = False):
 
     net_name = net_name.lower()
 
