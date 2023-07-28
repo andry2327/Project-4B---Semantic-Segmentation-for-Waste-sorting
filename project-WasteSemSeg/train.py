@@ -11,7 +11,7 @@ import torchvision.transforms as standard_transforms
 import torchvision.utils as vutils
 from tensorboardX import SummaryWriter
 
-import losses
+from losses import set_loss
 
 from config import cfg
 from loading_data import loading_data
