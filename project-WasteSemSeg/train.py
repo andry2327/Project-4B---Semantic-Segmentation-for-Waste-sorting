@@ -73,12 +73,12 @@ def set_loss(loss_name):
         case "cross_entropy":
             loss = torch.nn.CrossEntropyLoss().cuda()
         case "focal":
-            loss = losses.FocalLoss("multiclass", gamma = 2) 
+            loss = losses.FocalLoss("multiclass", gamma = 2).cuda()
             # possible values for gamma :0.1, 0.5, 1, 5 
         case "lovasz":
-            loss = losses.LovaszLos("multiclass")
+            loss = losses.LovaszLos("multiclass").cuda()
         case "dice":
-            loss = losses.DiceLoss("multiclass")
+            loss = losses.DiceLoss("multiclass").cuda()
         case "class_balanced_focal_loss":
             #loss = CB_loss
             loss = "" # we need to change the function, because we need a class.
@@ -110,7 +110,9 @@ def main(net_name = 'Enet', loss_name = 'CrossEntropy', checkpoint = False):
 
     net.train()
     #criterion = torch.nn.BCEWithLogitsLoss().cuda() # Binary Classification
-    criterion = torch.nn.CrossEntropyLoss().cuda() #instance segmentation
+    #criterion = torch.nn.CrossEntropyLoss().cuda() #instance segmentation
+    criterion = set_loss(loss_name)
+    print(f"criterion successufully set to: {loss_name}")
     optimizer = optim.Adam(net.parameters(), lr=cfg.TRAIN.LR, weight_decay=cfg.TRAIN.WEIGHT_DECAY)
     scheduler = StepLR(optimizer, step_size=cfg.TRAIN.NUM_EPOCH_LR_DECAY, gamma=cfg.TRAIN.LR_DECAY)
     _t = {'train time' : Timer(),'val time' : Timer()} 
