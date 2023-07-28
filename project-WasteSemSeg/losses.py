@@ -18,9 +18,24 @@ def set_loss(loss_name):
         case "cbfl":
             #loss = CB_loss
             loss = CB_loss(cfg.DATA.NUM_CLASSES, 0.9, 2).cuda() # we need to change the function, because we need a class.
+        case "f+l":
+            loss = Combined_losses("focal", "lovasz")
         case _:
             loss = torch.nn.CrossEntropyLoss().cuda()
     return loss
+
+class Combined_losses(nn.Module):
+    def __init__(self, first_loss, second_loss):
+        super().__init__()
+        self.first = set_loss(first_loss)
+        self.second = set_loss(second_loss)
+    
+    def forward(self, y_pred, y_true):
+        sum = self.first(y_pred, y_true) + self.second(y_pred, y_true)
+        return sum
+
+
+#-----------------------------EXPERIMENTAL PART, IT DOESN'T WORK ------------------------------------------
 
 def focal_loss(labels, logits, alpha, gamma):
     """Compute the focal loss between `logits` and the ground truth `labels`.
