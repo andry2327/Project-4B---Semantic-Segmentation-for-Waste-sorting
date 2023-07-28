@@ -14,9 +14,6 @@ from model import ENet
 from bisenet import BiSeNetV2 
 from icnet import icnet_resnetd50b_cityscapes as icnet # https://github.com/osmr/imgclsmob/blob/master/pytorch/pytorchcv/models/icnet.py
 
-import segmentation_models_pytorch.losses as losses
-from class_balance_loss import CB_loss
-
 import matplotlib.pyplot as plt
 
 plt.rcParams['figure.dpi'] = 150
@@ -130,22 +127,6 @@ def set_net(net_name):
         net = icnet(in_size=(224, 448), num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False).eval().cuda()
     return net
 
-def set_loss(loss_name):
-    loss_name = loss_name.lower()
-    match loss_name:
-        case "cross_entropy":
-            loss = torch.nn.CrossEntropyLoss().cuda()
-        case "focal":
-            loss = losses.FocalLoss("multiclass", gamma = 2).cuda()
-            # possible values for gamma :0.1, 0.5, 1, 5 
-        case "lovasz":
-            loss = losses.LovaszLoss("multiclass").cuda()
-        case "dice":
-            loss = losses.DiceLoss("multiclass").cuda()
-        case "class_balanced_focal_loss":
-            #loss = CB_loss
-            loss = "" # we need to change the function, because we need a class.
-    return loss
 
 # PLOTS UTILS
 def showTicksLabels(xticks):
