@@ -95,7 +95,7 @@ def main(net_name = 'Enet', checkpoint = False):
     for epoch in range(start_epoch, start_epoch+cfg.TRAIN.MAX_EPOCH):
 
         _t['train time'].tic()
-        train(train_loader, net, criterion, optimizer, epoch)
+        train(train_loader, net, criterion, optimizer, scheduler, epoch)
         _t['train time'].toc(average=False)
         print('🟠 TRAINING time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH, _t['train time'].diff))
         _t['val time'].tic()
@@ -120,7 +120,7 @@ def main(net_name = 'Enet', checkpoint = False):
     return mIoU_list
 
 
-def train(train_loader, net, criterion, optimizer, epoch):
+def train(train_loader, net, criterion, optimizer, scheduler, epoch):
 
     train_progress = tqdm(total=len(train_loader), desc=f"Epoch {epoch+1} Training", leave=False)
 
@@ -133,7 +133,10 @@ def train(train_loader, net, criterion, optimizer, epoch):
         outputs = net(inputs)
         loss = criterion(outputs, labels.unsqueeze(1).float())
         loss.backward()
+        #DEBUG
+        optimizer.param_groups[0]['lr']
         optimizer.step()
+        scheduler.step()
 
         train_progress.update(1)
     
