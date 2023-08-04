@@ -95,6 +95,8 @@ def main(net_name = 'Enet', checkpoint = False):
     for epoch in range(start_epoch, start_epoch+cfg.TRAIN.MAX_EPOCH):
 
         _t['train time'].tic()
+        #DEBUG
+        print(f'LR = {optimizer.param_groups[0]["lr"]}')
         train(train_loader, net, criterion, optimizer, scheduler, epoch)
         _t['train time'].toc(average=False)
         print('🟠 TRAINING time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH, _t['train time'].diff))
@@ -133,8 +135,6 @@ def train(train_loader, net, criterion, optimizer, scheduler, epoch):
         outputs = net(inputs)
         loss = criterion(outputs, labels.unsqueeze(1).float())
         loss.backward()
-        #DEBUG
-        print(f'LR = {optimizer.param_groups[0]["lr"]}')
         optimizer.step()
         scheduler.step()
 
