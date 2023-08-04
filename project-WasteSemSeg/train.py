@@ -134,7 +134,7 @@ def train(train_loader, net, criterion, optimizer, scheduler, epoch):
         loss = criterion(outputs, labels.unsqueeze(1).float())
         loss.backward()
         #DEBUG
-        optimizer.param_groups[0]['lr']
+        print(f'LR = {optimizer.param_groups[0]["lr"]}')
         optimizer.step()
         scheduler.step()
 
