@@ -48,7 +48,7 @@ def set_net(net_name):
         net =  ptcv_get_model('icnet_resnetd50b_cityscapes', in_size=(224, 448), num_classes=cfg.DATA.NUM_CLASSES, pretrained=False, aux=False).eval().cuda()
     return net
 
-def main(net_name = 'Enet', loss_name='', checkpoint = False):
+def main(net_name = 'Enet', loss_name = 'Cross_Entropy', checkpoint = False):
 
     net_name = net_name.lower()
 
