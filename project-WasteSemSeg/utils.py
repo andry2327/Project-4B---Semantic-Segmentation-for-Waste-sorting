@@ -155,7 +155,7 @@ def plot_mIoU_validation(net_str, mIoU_list, N_epoch, lr, N_classes):
 
     plt.draw()
 
-    fig_name = f'{net_str}__N_epoch={N_epoch}_LR={lr}_N_classes={N_classes}_->_MAXmIoU={round(max(mIoU_list), 4)}_LASTmIoU={round(mIoU_list[-1], 4)}'
+    fig_name = f'{net_str}__N_epoch={N_epoch}_LR={lr}_N_classes={N_classes}_->_MAXmIoU={round(max(mIoU_list), 4)}_LASTmIoU={round(mIoU_list[-1], 4)}_YLIM[0,1]'
     format = '.png'
     plt.savefig(fig_name+format, dpi=200)
 
