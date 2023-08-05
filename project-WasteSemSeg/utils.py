@@ -134,6 +134,9 @@ def plot_mIoU_validation(net_str, mIoU_list, N_epoch, lr, N_classes):
 
     # FIG 2
 
+    print()
+    print(f'Plot ylim in [0, 1]')
+    print()
     plt.figure(figsize=(10,5))
 
     plt.xlabel(f'epoch')
