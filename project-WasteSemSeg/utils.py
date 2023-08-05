@@ -110,6 +110,8 @@ def showTicksLabels(xticks):
 
 def plot_mIoU_validation(net_str, mIoU_list, N_epoch, lr, N_classes):
 
+    # FIG 1
+
     plt.figure(figsize=(10,5))
 
     plt.xlabel(f'epoch')
@@ -128,6 +130,35 @@ def plot_mIoU_validation(net_str, mIoU_list, N_epoch, lr, N_classes):
     plt.draw()
 
     fig_name = f'{net_str}__N_epoch={N_epoch}_LR={lr}_N_classes={N_classes}_->_MAXmIoU={round(max(mIoU_list), 4)}_LASTmIoU={round(mIoU_list[-1], 4)}'
+    format = '.png'
+    plt.savefig(fig_name+format, dpi=200)
+
+    plt.show()
+
+    # FIG 2
+
+    print()
+    print(f'Plot ylim in [0, 1]')
+    print()
+    plt.figure(figsize=(10,5))
+
+    plt.xlabel(f'epoch')
+    plt.ylabel(f'mIoU')
+    plt.title(f'{net_str} Validation')
+
+    # plt.xticks([x+1 for x in range(N_epoch)])
+    plt.plot([x+1 for x in range(N_epoch)], mIoU_list, marker='o')
+    plt.ylim(0, 1)
+
+    ax = plt.gca()
+
+    ax.set_xticks([x+1 for x in range(N_epoch)])
+    xticklabels = showTicksLabels([x+1 for x in range(N_epoch)])
+    ax.set_xticklabels(xticklabels)
+
+    plt.draw()
+
+    fig_name = f'{net_str}__N_epoch={N_epoch}_LR={lr}_N_classes={N_classes}_->_MAXmIoU={round(max(mIoU_list), 4)}_LASTmIoU={round(mIoU_list[-1], 4)}_ylim_01'
     format = '.png'
     plt.savefig(fig_name+format, dpi=200)
 
