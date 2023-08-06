@@ -43,9 +43,9 @@ __C.TRAIN.GPU_ID = [0]
 __C.TRAIN.RESUME = ''#model path
 
 # learning rate settings
-__C.TRAIN.LR = 5e-6 # original: 5e-4
-__C.TRAIN.LR_DECAY = 1 # = 1 for NO LR DECAY, original = 0.995
-__C.TRAIN.NUM_EPOCH_LR_DECAY = 1 #epoches
+__C.TRAIN.LR = 5e-4 # original: 5e-4
+__C.TRAIN.LR_DECAY = 0.995 # = 1 for NO LR DECAY, original = 0.995
+__C.TRAIN.NUM_EPOCH_LR_DECAY = 50 #epoches
 
 __C.TRAIN.WEIGHT_DECAY = 2e-4
 
