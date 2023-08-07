@@ -97,7 +97,7 @@ def main(net_name = 'Enet', loss_name = 'Cross_Entropy', checkpoint = False):
         _t['train time'].tic()
         train(train_loader, net, criterion, optimizer, scheduler, epoch)
         _t['train time'].toc(average=False)
-        print('🟠 TRAINING time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH, _t['train time'].diff))
+        print('🟠 TRAINING time of epoch {}/{} = {:.2f}s, LR = {:.4f}'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH, _t['train time'].diff, optimizer.param_groups[0]['lr']))
         print("learning rate: ",optimizer.param_groups[0]['lr'])
         _t['val time'].tic()
         mIoU = validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
