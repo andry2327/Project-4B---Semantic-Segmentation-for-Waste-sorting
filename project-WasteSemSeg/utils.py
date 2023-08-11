@@ -11,6 +11,7 @@ from config import cfg
 from torch import optim
 
 from model import ENet
+from model_custom import ENet as ENet_c
 from bisenet import BiSeNetV2 
 from icnet import icnet_resnetd50b_cityscapes as icnet # https://github.com/osmr/imgclsmob/blob/master/pytorch/pytorchcv/models/icnet.py
 
@@ -113,6 +114,17 @@ def set_net(net_name):
     if(net_name == 'enet'):
         if cfg.TRAIN.STAGE=='all':
             net = ENet(only_encode=False)
+            if cfg.TRAIN.PRETRAINED_ENCODER != '':
+                encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
+                del encoder_weight['classifier.bias']
+                del encoder_weight['classifier.weight']
+                # pdb.set_trace()
+                net.encoder.load_state_dict(encoder_weight)
+        elif cfg.TRAIN.STAGE =='encoder':
+            net = ENet(only_encode=True)
+    elif(net_name == 'enet_c'):
+        if cfg.TRAIN.STAGE=='all':
+            net = ENet_c(only_encode=False)
             if cfg.TRAIN.PRETRAINED_ENCODER != '':
                 encoder_weight = torch.load(cfg.TRAIN.PRETRAINED_ENCODER)
                 del encoder_weight['classifier.bias']
