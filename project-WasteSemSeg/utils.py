@@ -132,7 +132,7 @@ def set_net(net_name):
                 # pdb.set_trace()
                 net.encoder.load_state_dict(encoder_weight)
         elif cfg.TRAIN.STAGE =='encoder':
-            net = ENet(only_encode=True)
+            net = ENet_c(only_encode=True)
     elif (net_name == 'bisenet'):
         net = BiSeNetV2(n_classes=cfg.DATA.NUM_CLASSES)
     else : 

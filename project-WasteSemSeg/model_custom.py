@@ -272,7 +272,6 @@ class ENet(nn.Module):
         self.state = only_encode
         self.encoder = Encoder(cfg.DATA.NUM_CLASSES,only_encode=only_encode)
         self.decoder = Decoder(cfg.DATA.NUM_CLASSES)
-        print(f'ENet_custom loaded')
 
     def forward(self, input):
         output, pooling_stack = self.encoder(input)

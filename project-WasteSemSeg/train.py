@@ -62,7 +62,8 @@ def main(net_name = 'Enet', loss_name = 'Cross_Entropy', checkpoint = False):
     torch.backends.cudnn.benchmark = True
 
     #net=[]
-    net = set_net(net_name)    
+    net = set_net(net_name)  
+    print(f"Net successufully set to: {net_name}")  
 
     if len(cfg.TRAIN.GPU_ID)>1:
         net = torch.nn.DataParallel(net, device_ids=cfg.TRAIN.GPU_ID).cuda()
