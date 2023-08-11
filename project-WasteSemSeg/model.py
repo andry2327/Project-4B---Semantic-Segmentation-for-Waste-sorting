@@ -191,27 +191,22 @@ class Encoder(nn.Module):
         for i in range(4):
             layers.append(BottleNeck(64, 64, regularlizer_prob=0.01))
         
-        # CUSTOM
-        # (64 x 128 x 128) -> (128 x 64 x 64)
-        layers.append(BottleNeck(64, 128,downsampling=True))
-        
         # Section 2
-        # (128 x 128 x 128) -> (256 x 32 x 32)
-        layers.append(BottleNeck(128, 256, downsampling=True))
+        layers.append(BottleNeck(64, 128, downsampling=True)) # Only 1st time
         # Section 2 and 3
         for i in range(2):
-            layers.append(BottleNeck(256, 256))
-            layers.append(BottleNeck(256, 256, dilated=True, dilation_rate=2))
-            layers.append(BottleNeck(256, 256, asymmetric=True))
-            layers.append(BottleNeck(256, 256, dilated=True, dilation_rate=4))
-            layers.append(BottleNeck(256, 256))
-            layers.append(BottleNeck(256, 256, dilated=True, dilation_rate=8))
-            layers.append(BottleNeck(256, 256, asymmetric=True))
-            layers.append(BottleNeck(256, 256, dilated=True, dilation_rate=16))
+            layers.append(BottleNeck(128, 128))
+            layers.append(BottleNeck(128, 128, dilated=True, dilation_rate=2))
+            layers.append(BottleNeck(128, 128, asymmetric=True))
+            layers.append(BottleNeck(128, 128, dilated=True, dilation_rate=4))
+            layers.append(BottleNeck(128, 128))
+            layers.append(BottleNeck(128, 128, dilated=True, dilation_rate=8))
+            layers.append(BottleNeck(128, 128, asymmetric=True))
+            layers.append(BottleNeck(128, 128, dilated=True, dilation_rate=16))
             
         # only training encoder
         if only_encode:
-            layers.append(nn.Conv2d(256, num_classes, 1, device="cuda:0")) #here we have a problem now
+            layers.append(nn.Conv2d(128, num_classes, 1))
 
         for layer, layer_name in zip(layers, ENCODER_LAYER_NAMES):
             super(Encoder, self).__setattr__(layer_name, layer)
@@ -238,12 +233,7 @@ class Decoder(nn.Module):
     def __init__(self, num_classes):
         super(Decoder, self).__init__()
         layers = []
-        #CUSTOM: input (256 x 32 x 32)
-        # (256 x 32 x 32) -> (128 x 64 x 64)
-        layers.append(BottleNeck(256, 128, upsampling=True, use_relu=True))
-
         # Section 4
-        # (128 x 64 x 64) -> (64 x 128 x 128)
         layers.append(BottleNeck(128, 64, upsampling=True, use_relu=True))
         layers.append(BottleNeck(64, 64, use_relu=True))
         layers.append(BottleNeck(64, 64, use_relu=True))
