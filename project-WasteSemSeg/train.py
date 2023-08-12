@@ -83,7 +83,7 @@ def main(net_name = 'Enet', loss_name = 'Cross_Entropy', checkpoint = False):
     mIoU_list = []
 
     if checkpoint:
-        net, optimizer, start_epoch, mIoU_list = load_checkpoints(net_name, net, optimizer)
+        net, optimizer, scheduler, start_epoch, mIoU_list = load_checkpoints(net_name, net, optimizer, scheduler)
         #start_epoch += 1 #because the start_epoch was already trained.
 
     print()
