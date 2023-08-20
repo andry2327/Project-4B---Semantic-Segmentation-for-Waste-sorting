@@ -215,7 +215,8 @@ def load_checkpoints(net_name, net, optimizer, scheduler):
             # restore the state of the model and optimizer
             net.load_state_dict(checkpoint['model_state_dict'])
             optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-            scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
+            #all the checkpoints don't have a scheduler_state_dict
+            #scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
 
             # resume training from the saved epoch
             start_epoch = checkpoint['epoch']
