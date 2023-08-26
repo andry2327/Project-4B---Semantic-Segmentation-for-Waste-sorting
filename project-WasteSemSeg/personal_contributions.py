@@ -35,7 +35,7 @@ def recursive_module_name(module, method, amount): # 😢
     
     return
 
-def get_pruned_model(model, method=prune.random_unstructured, amount=0.8, n=2, dim=0, t=0.0):
+def get_pruned_model(model, method=prune.random_unstructured, amount=0.8, n=2, dim=0):
 
     N_modules = 0
     N_pruned_modules = 0
@@ -45,14 +45,17 @@ def get_pruned_model(model, method=prune.random_unstructured, amount=0.8, n=2, d
         # pruning Conv2d -> 72/338
         if isinstance(module, torch.nn.Conv2d):
 
-            if method is prune.random_unstructured or method is prune.l1_unstructured or method is prune.random_structured:
+            if method is prune.random_unstructured or method is prune.l1_unstructured:
                 method(module, name='weight', amount=amount)
                 N_pruned_modules += 1
-            elif method is prune.ln_structured or method is prune.l1_unstructured or method is prune.random_structured:
+            elif method is prune.random_structured:
+                method(module, name='weight', amount=amount, dim=dim)
+                N_pruned_modules += 1
+            elif method is prune.ln_structured:
                 method(module, name='weight', amount=amount, n=n, dim=dim)
                 N_pruned_modules += 1
             elif method is prune.identity:
-                method(module, name='weight', t=t)
+                method(module, name='weight')
                 N_pruned_modules += 1
 
         # pruning Linear -> 0/338 😢
