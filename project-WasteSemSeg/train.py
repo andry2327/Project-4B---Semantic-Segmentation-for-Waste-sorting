@@ -81,13 +81,13 @@ def main(net_name = 'Enet', loss_name = 'Cross_Entropy', checkpoint = False):
 
     # Validation
     mIoU_list = []
-    aluminum_mIoU_list = []
+    aluminium_mIoU_list = []
     paper_mIoU_list = []
     bottle_mIoU_list = []
     nylon_mIoU_list = []
 
     if checkpoint:
-        net, optimizer, scheduler, start_epoch, mIoU_list, aluminum_mIoU_list, paper_mIoU_list, bottle_mIoU_list, nylon_mIoU_list = load_checkpoints(net_name, net, optimizer, scheduler)
+        net, optimizer, scheduler, start_epoch, mIoU_list, aluminium_mIoU_list, paper_mIoU_list, bottle_mIoU_list, nylon_mIoU_list = load_checkpoints(net_name, net, optimizer, scheduler)
         #start_epoch += 1 #because the start_epoch was already trained.
 
     print()
@@ -105,9 +105,9 @@ def main(net_name = 'Enet', loss_name = 'Cross_Entropy', checkpoint = False):
         print('🟠 TRAINING time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH, _t['train time'].diff))
         print("learning rate: ",optimizer.param_groups[0]['lr'])
         _t['val time'].tic()
-        mIoU, aluminum_mIoU, paper_mIoU, bottle_mIoU, nylon_mIoU = validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
+        mIoU, aluminium_mIoU, paper_mIoU, bottle_mIoU, nylon_mIoU = validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
         mIoU_list.append(mIoU)
-        aluminum_mIoU_list.append(aluminum_mIoU)
+        aluminium_mIoU_list.append(aluminium_mIoU)
         paper_mIoU_list.append(paper_mIoU)
         bottle_mIoU_list.append(bottle_mIoU)
         nylon_mIoU_list.append(nylon_mIoU)
@@ -126,7 +126,7 @@ def main(net_name = 'Enet', loss_name = 'Cross_Entropy', checkpoint = False):
                 #'scheduler_state_dict': scheduler.state_dict(),
                 'epoch': epoch+1,
                 'mIoU_list': mIoU_list,
-                'aluminum_mIoU_list': aluminum_mIoU_list,
+                'aluminium_mIoU_list': aluminium_mIoU_list,
                 'paper_mIoU_list': paper_mIoU_list,
                 'bottle_mIoU_list': bottle_mIoU_list,
                 'nylon_mIoU_list': nylon_mIoU_list
@@ -136,7 +136,7 @@ def main(net_name = 'Enet', loss_name = 'Cross_Entropy', checkpoint = False):
             if epoch >= start_epoch+save_every:
                 os.remove(f'checkpoints/{net_name}/checkpoint_{net_name}_N_CLASSES={cfg.DATA.NUM_CLASSES}_epoch={epoch+1-save_every}.pth')
 
-    return mIoU_list, aluminum_mIoU_list, paper_mIoU_list, bottle_mIoU_list, nylon_mIoU_list
+    return mIoU_list, aluminium_mIoU_list, paper_mIoU_list, bottle_mIoU_list, nylon_mIoU_list
 
 
 def train(train_loader, net, criterion, optimizer, scheduler, epoch):

@@ -164,7 +164,7 @@ def showTicksLabels(xticks):
     return xticklabels
 
 
-def plot_mIoU_validation(net_str, mIoU_list, aluminum_mIoU_list, paper_mIoU_list, bottle_mIoU_list,	nylon_mIoU_list, N_epoch, lr, N_classes):
+def plot_mIoU_validation(net_str, mIoU_list, aluminium_mIoU_list, paper_mIoU_list, bottle_mIoU_list,	nylon_mIoU_list, N_epoch, lr, N_classes):
 
     # FIG 1
 
@@ -235,7 +235,7 @@ def plot_mIoU_validation(net_str, mIoU_list, aluminum_mIoU_list, paper_mIoU_list
     # plt.xticks([x+1 for x in range(N_epoch)])
     
     plt.plot([x+1 for x in range(N_epoch)],
-             aluminum_mIoU_list, color='slategrey', label='Aluminum', linewidth=1)  # aluminum_mIoU_list
+             aluminium_mIoU_list, color='slategrey', label='Aluminium', linewidth=1)  # aluminium_mIoU_list
     plt.plot([x+1 for x in range(N_epoch)], mIoU_list,
              marker='o', label='Total mIoU')
     plt.plot([x+1 for x in range(N_epoch)], paper_mIoU_list,
@@ -275,7 +275,7 @@ def plot_mIoU_validation(net_str, mIoU_list, aluminum_mIoU_list, paper_mIoU_list
     # plt.xticks([x+1 for x in range(N_epoch)])
     
     plt.plot([x+1 for x in range(N_epoch)],
-             aluminum_mIoU_list, color='slategrey', label='Aluminum', linewidth=1, alpha=0.5)  # aluminum_mIoU_list
+             aluminium_mIoU_list, color='slategrey', label='Aluminium', linewidth=1, alpha=0.5)  # aluminium_mIoU_list
     plt.plot([x+1 for x in range(N_epoch)], mIoU_list,
              marker='o', label='Total mIoU')
     plt.plot([x+1 for x in range(N_epoch)], paper_mIoU_list,
@@ -321,13 +321,13 @@ def load_checkpoints(net_name, net, optimizer, scheduler):
 
         # save previous mIoU list
         mIoU_list = checkpoint['mIoU_list']
-        aluminum_mIoU_list = checkpoint['aluminum_mIoU_list']
+        aluminium_mIoU_list = checkpoint['aluminium_mIoU_list']
         paper_mIoU_list = checkpoint['paper_mIoU_list']
         bottle_mIoU_list = checkpoint['bottle_mIoU_list']
         nylon_mIoU_list = checkpoint['nylon_mIoU_list']
 
         print(f"✅ Model '{path_pth_file}' Loaded\n")
-        return net, optimizer, scheduler, start_epoch, mIoU_list, aluminum_mIoU_list, paper_mIoU_list, bottle_mIoU_list, nylon_mIoU_list
+        return net, optimizer, scheduler, start_epoch, mIoU_list, aluminium_mIoU_list, paper_mIoU_list, bottle_mIoU_list, nylon_mIoU_list
 
 
 def create_checkpoint_net(net_name):
