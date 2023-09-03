@@ -136,7 +136,7 @@ def main(net_name = 'Enet', loss_name = 'Cross_Entropy', checkpoint = False):
             if epoch >= start_epoch+save_every:
                 os.remove(f'checkpoints/{net_name}/checkpoint_{net_name}_N_CLASSES={cfg.DATA.NUM_CLASSES}_epoch={epoch+1-save_every}.pth')
 
-    return mIoU_list
+    return mIoU_list, aluminum_mIoU_list, paper_mIoU_list, bottle_mIoU_list, nylon_mIoU_list
 
 
 def train(train_loader, net, criterion, optimizer, scheduler, epoch):
