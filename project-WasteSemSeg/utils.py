@@ -275,15 +275,15 @@ def plot_mIoU_validation(net_str, mIoU_list, aluminum_mIoU_list, paper_mIoU_list
     # plt.xticks([x+1 for x in range(N_epoch)])
     
     plt.plot([x+1 for x in range(N_epoch)],
-             aluminum_mIoU_list, color='slategrey', label='Aluminum', linewidth=1)  # aluminum_mIoU_list
+             aluminum_mIoU_list, color='slategrey', label='Aluminum', linewidth=1, alpha=0.5)  # aluminum_mIoU_list
     plt.plot([x+1 for x in range(N_epoch)], mIoU_list,
              marker='o', label='Total mIoU')
     plt.plot([x+1 for x in range(N_epoch)], paper_mIoU_list,
-             color='orange', label='Paper', linewidth=1)  # paper_mIoU_list
+             color='orange', label='Paper', linewidth=1, alpha=0.5)  # paper_mIoU_list
     plt.plot([x+1 for x in range(N_epoch)],
-             bottle_mIoU_list, color='green', label='Bottle', linewidth=1)  # bottle_mIoU_list
+             bottle_mIoU_list, color='green', label='Bottle', linewidth=1, alpha=0.5)  # bottle_mIoU_list
     plt.plot([x+1 for x in range(N_epoch)], nylon_mIoU_list,
-             color='darkviolet', label='Nylon', linewidth=1)  # nylon_mIoU_list
+             color='darkviolet', label='Nylon', linewidth=1, alpha=0.5)  # nylon_mIoU_list
     
     plt.ylim(0, 1)
     
