@@ -222,6 +222,10 @@ def plot_mIoU_validation(net_str, mIoU_list, aluminum_mIoU_list, paper_mIoU_list
 
     # FIG 3
 
+    print()
+    print(f'Plot 4 classes')
+    print()
+
     plt.figure(figsize=(10, 5))
 
     plt.xlabel(f'epoch')
@@ -250,13 +254,17 @@ def plot_mIoU_validation(net_str, mIoU_list, aluminum_mIoU_list, paper_mIoU_list
 
     plt.draw()
 
-    fig_name = f'{net_str}__N_epoch={N_epoch}_LR={lr}_N_classes={N_classes}_->_MAXmIoU={round(max(mIoU_list), 4)}_LASTmIoU={round(mIoU_list[-1], 4)}'
+    fig_name = f'{net_str}__N_epoch={N_epoch}_LR={lr}_N_classes={N_classes}_->_MAXmIoU={round(max(mIoU_list), 4)}_LASTmIoU={round(mIoU_list[-1], 4)}_5classesplot'
     format = '.png'
     plt.savefig(fig_name+format, dpi=200)
 
     plt.show()
 
     # FIG 4
+
+    print()
+    print(f'Plot 4 classes, ylim in [0, 1]')
+    print()
 
     plt.figure(figsize=(10, 5))
 
@@ -288,7 +296,7 @@ def plot_mIoU_validation(net_str, mIoU_list, aluminum_mIoU_list, paper_mIoU_list
 
     plt.draw()
 
-    fig_name = f'{net_str}__N_epoch={N_epoch}_LR={lr}_N_classes={N_classes}_->_MAXmIoU={round(max(mIoU_list), 4)}_LASTmIoU={round(mIoU_list[-1], 4)}'
+    fig_name = f'{net_str}__N_epoch={N_epoch}_LR={lr}_N_classes={N_classes}_->_MAXmIoU={round(max(mIoU_list), 4)}_LASTmIoU={round(mIoU_list[-1], 4)}_5classesplot_ylim_01'
     format = '.png'
     plt.savefig(fig_name+format, dpi=200)
 
