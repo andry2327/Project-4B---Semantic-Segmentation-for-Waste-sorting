@@ -81,9 +81,13 @@ def main(net_name = 'Enet', loss_name = 'Cross_Entropy', checkpoint = False):
 
     # Validation
     mIoU_list = []
+    aluminum_mIoU_list = []
+    paper_mIoU_list = []
+    bottle_mIoU_list = []
+    nylon_mIoU_list = []
 
     if checkpoint:
-        net, optimizer, scheduler, start_epoch, mIoU_list = load_checkpoints(net_name, net, optimizer, scheduler)
+        net, optimizer, scheduler, start_epoch, mIoU_list, aluminum_mIoU_list, paper_mIoU_list, bottle_mIoU_list, nylon_mIoU_list = load_checkpoints(net_name, net, optimizer, scheduler)
         #start_epoch += 1 #because the start_epoch was already trained.
 
     print()
@@ -101,8 +105,12 @@ def main(net_name = 'Enet', loss_name = 'Cross_Entropy', checkpoint = False):
         print('🟠 TRAINING time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH, _t['train time'].diff))
         print("learning rate: ",optimizer.param_groups[0]['lr'])
         _t['val time'].tic()
-        mIoU = validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
+        mIoU, aluminum_mIoU, paper_mIoU, bottle_mIoU, nylon_mIoU = validate(val_loader, net, criterion, optimizer, epoch, restore_transform)
         mIoU_list.append(mIoU)
+        aluminum_mIoU_list.append(aluminum_mIoU)
+        paper_mIoU_list.append(paper_mIoU)
+        bottle_mIoU_list.append(bottle_mIoU)
+        nylon_mIoU_list.append(nylon_mIoU)
         _t['val time'].toc(average=False)
         print('🟢 VALIDATION time of epoch {}/{} = {:.2f}s'.format(epoch+1, start_epoch+cfg.TRAIN.MAX_EPOCH,  _t['val time'].diff))
         
@@ -117,7 +125,11 @@ def main(net_name = 'Enet', loss_name = 'Cross_Entropy', checkpoint = False):
                 'optimizer_state_dict': optimizer.state_dict(),
                 #'scheduler_state_dict': scheduler.state_dict(),
                 'epoch': epoch+1,
-                'mIoU_list': mIoU_list
+                'mIoU_list': mIoU_list,
+                'aluminum_mIoU_list': aluminum_mIoU_list,
+                'paper_mIoU_list': paper_mIoU_list,
+                'bottle_mIoU_list': bottle_mIoU_list,
+                'nylon_mIoU_list': nylon_mIoU_list
             }
             torch.save(checkpoint, f'checkpoints/{net_name}/checkpoint_{net_name}_N_CLASSES={cfg.DATA.NUM_CLASSES}_epoch={epoch+1}.pth')
             print(f"🔷 Model checkpoint '{f'checkpoint_{net_name}_N_CLASSES={cfg.DATA.NUM_CLASSES}_epoch={epoch+1}.pth'}' saved")
@@ -194,7 +206,7 @@ def validate(val_loader, net, criterion, optimizer, epoch, restore):
     net.train()
     criterion.cuda()
 
-    return mean_iu
+    return mean_iu, iou_classes_[0], iou_classes_[1], iou_classes_[2], iou_classes_[3]
 
 
 if __name__ == '__main__':
