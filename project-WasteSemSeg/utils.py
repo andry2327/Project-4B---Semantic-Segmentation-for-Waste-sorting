@@ -235,15 +235,15 @@ def plot_mIoU_validation(net_str, mIoU_list, aluminium_mIoU_list, paper_mIoU_lis
     # plt.xticks([x+1 for x in range(N_epoch)])
     
     plt.plot([x+1 for x in range(N_epoch)],
-             aluminium_mIoU_list, color='purple', label='Aluminium', linewidth=1, alpha=0.7)  # aluminium_mIoU_list
-    plt.plot([x+1 for x in range(N_epoch)], mIoU_list,
-             marker='o', label='Total mIoU', zorder=100)
+             aluminium_mIoU_list, color='purple', label='Aluminium', linewidth=1)  # aluminium_mIoU_list
+    # plt.plot([x+1 for x in range(N_epoch)], mIoU_list,
+    #          marker='o', label='Total mIoU', zorder=100)
     plt.plot([x+1 for x in range(N_epoch)], paper_mIoU_list,
-             color='orange', label='Paper', linewidth=1, alpha=0.7)  # paper_mIoU_list
+             color='orange', label='Paper', linewidth=1)  # paper_mIoU_list
     plt.plot([x+1 for x in range(N_epoch)],
-             bottle_mIoU_list, color='green', label='Bottle', linewidth=1, alpha=0.7)  # bottle_mIoU_list
+             bottle_mIoU_list, color='green', label='Bottle', linewidth=1)  # bottle_mIoU_list
     plt.plot([x+1 for x in range(N_epoch)], nylon_mIoU_list,
-             color='red', label='Nylon', linewidth=1, alpha=0.7)  # nylon_mIoU_list
+             color='red', label='Nylon', linewidth=1)  # nylon_mIoU_list
     
     plt.legend(loc='lower right', prop={'size':11}, ncol=4, handletextpad=0.3)
     ax = plt.gca()
@@ -275,15 +275,15 @@ def plot_mIoU_validation(net_str, mIoU_list, aluminium_mIoU_list, paper_mIoU_lis
     # plt.xticks([x+1 for x in range(N_epoch)])
     
     plt.plot([x+1 for x in range(N_epoch)],
-             aluminium_mIoU_list, color='purple', label='Aluminium', linewidth=1, alpha=0.7)  # aluminium_mIoU_list
-    plt.plot([x+1 for x in range(N_epoch)], mIoU_list,
-             marker='o', label='Total mIoU', zorder=100)
+             aluminium_mIoU_list, color='purple', label='Aluminium', linewidth=1)  # aluminium_mIoU_list
+    # plt.plot([x+1 for x in range(N_epoch)], mIoU_list,
+    #          marker='o', label='Total mIoU', zorder=100)
     plt.plot([x+1 for x in range(N_epoch)], paper_mIoU_list,
-             color='orange', label='Paper', linewidth=1, alpha=0.7)  # paper_mIoU_list
+             color='orange', label='Paper', linewidth=1)  # paper_mIoU_list
     plt.plot([x+1 for x in range(N_epoch)],
-             bottle_mIoU_list, color='green', label='Bottle', linewidth=1, alpha=0.7)  # bottle_mIoU_list
+             bottle_mIoU_list, color='green', label='Bottle', linewidth=1)  # bottle_mIoU_list
     plt.plot([x+1 for x in range(N_epoch)], nylon_mIoU_list,
-             color='red', label='Nylon', linewidth=1, alpha=0.7)  # nylon_mIoU_list
+             color='red', label='Nylon', linewidth=1)  # nylon_mIoU_list
     
     plt.ylim(0, 1)
     
