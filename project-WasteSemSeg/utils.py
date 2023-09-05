@@ -155,8 +155,11 @@ def set_net(net_name):
 
 # PLOTS UTILS
 def showTicksLabels(xticks):
-    if len(xticks) > 20:
+    if len(xticks) <= 100 and len(xticks) > 20:
         xticklabels = ['' if (int(i) % 5 != 0 and int(i) > 1)
+                       else str(int(i)) for i in xticks]
+    elif len(xticks) > 100:
+        xticklabels = ['' if (int(i) % 10 != 0 and int(i) > 1)
                        else str(int(i)) for i in xticks]
     else:
         xticklabels = xticks
