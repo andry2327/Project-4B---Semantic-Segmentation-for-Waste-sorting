@@ -90,12 +90,12 @@ def main(net_name = 'Enet', loss_name = 'Cross_Entropy', checkpoint = False):
         net, optimizer, scheduler, start_epoch, mIoU_list, aluminium_mIoU_list, paper_mIoU_list, bottle_mIoU_list, nylon_mIoU_list = load_checkpoints(net_name, net, optimizer, scheduler)
         #start_epoch += 1 #because the start_epoch was already trained.
 
-    # print() # FOR NOW ONLY
-    # print(f'Initial mIoU NO TRAINING: ', end='')
+    print() # FOR NOW ONLY
+    print(f'Initial mIoU NO TRAINING: ', end='')
 
-    # validate(val_loader, net, criterion, optimizer, -1, restore_transform)
+    validate(val_loader, net, criterion, optimizer, -1, restore_transform)
 
-    # print('\n')
+    print('\n')
    
     for epoch in range(start_epoch, start_epoch+cfg.TRAIN.MAX_EPOCH):
 
